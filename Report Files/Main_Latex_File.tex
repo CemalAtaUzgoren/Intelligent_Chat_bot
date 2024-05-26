@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+
+\usepackage[]{graphics}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{natbib}
+\usepackage[margin=2cm]{geometry}
+\usepackage{todonotes}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{ltablex} % This helps in handling long tables
+
+%opening
+\title{Developing an Intelligent Chatbot: the First Interim Report}
+% \todo{Add everyones student number to author}
+\author{Group 01: Cemal Ata Uzgoren (100447097), Joshua Newton (100401106) and Aman Seth (100442755)}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\begin{abstract}
+The goal of this project is to create a chatbot that helps users by using natural language processing (NLP). A chatbot is an automated dialogue system that uses natural language processing (NLP) to analyse user inquiries and provide appropriate responses %\cite{chatbot_nlp}
+. In this project, we aim to develop a user service chatbot that can converse with users and help them in precisely three scenarios: locating the best train ticket in the United Kingdom; predicting delays between train stations starting from London and going all the way to Norwich; and offering backup plans in case of blockages on the Great Eastern Tracks in Greater Anglia between Colchester and Norwich. Simple and complex user inquiries can be entered into this chatbot, which will then process them, categorise them into one of the pre-existing labels, and provide related responses. The chatBot is based on machine learning (ML) models that is built using Scikit-learn, spaCy pre-trained models for NLP, along with NLTK (Natural  Language  Tool  Kit) and other in-built python libraries. 
+
+\end{abstract}
+
+\input{Introduction}
+\input{Related Work}
+\input{Methods, Tools and Frameworks}
+\input{Implementation}
+\input{Testing}
+\input{Evaluation and Discussion.tex}
+\input{Conclusion.tex}
+
+
+\bibliographystyle{agsm}
+%\bibliographystyle{apalike}
+% you should use your own bibtex file to replace the following example_ref bib file.
+\bibliography{report_bib} 
+
+\newpage
+\input{appendix.tex}
+
+\end{document}
+
+
+
+% Josh
+% TODO: proof read regression parts of report (do all report if i have time)

@@ -1,0 +1,140 @@
+{
+    "Partial": {
+        "Stations": {
+            "Colchester,Manningtree": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Off-Peak: None train service operates as revised."
+            ],
+            "Manningtree,Ipswich": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross"
+            ],
+            "Ipswich,Stowmarket": [
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket."
+            ],
+            "Stowmarket,Diss": [
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Diss,Norwich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Establish rail replacement bus link Norwich-Diss."
+            ],
+            "Colchester,Ipswich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross"
+            ],
+            "Colchester,Stowmarket": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Off-Peak: None train service, operates as revised."
+            ],
+            "Colchester,Diss": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Off-Peak: None train service operates as revised.",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Colchester,Norwich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Manningtree,Stowmarket": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket."
+            ],
+            "Manningtree,Diss": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Manningtree:Norwich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Ipswich:Diss": [
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Ipswich:Norwich": [
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
+                "Local Bus 459 operates Stowmarket to Diss.",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Stowmarket:Norwich": [
+                "Local Bus 459 operates Stowmarket to Diss.",
+                "Establish rail replacement bus link Diss-Norwich."
+            ]
+        }
+    },
+    "Full": {
+        "Stations": {
+            "Colchester,Manningtree": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services)",
+                "Establish rail replacement bus link Manningtree and Colchester within 60 minutes."
+            ],
+            "Manningtree,Ipswich": [
+                "Establish rail replacement bus link Manningtree and Colchester within 60 minutes.",
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services)"
+            ],
+            "Ipswich,Stowmarket": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services)",
+                "Local buses (GA tickets not passed)",
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket",
+                "Local Bus 459 operates Stowmarket to Diss",
+                "Establish rail replacement bus link calling all stations Ipswich-Diss"
+            ],
+            "Stowmarket,Diss": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services)",
+                "Local buses (GA tickets not passed)",
+                "Local Bus 384 operates all stations Bury St Edmunds to Stowmarket",
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket",
+                "Establish rail replacement bus link calling all stations Ipswich-Diss",
+                "Establish rail replacement bus link calling all stations Ipswich-Bury St Edmunds"
+            ],
+            "Diss,Norwich": [
+                "Aim to have bus service in place 60 minutes into the incident",
+                "Establish rail replacement bus link Norwich-Diss."
+            ],
+            "Colchester,Ipswich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross"
+            ],
+            "Colchester,Stowmarket": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Off-Peak: None train service, operates as revised."
+            ],
+            "Colchester,Diss": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Off-Peak: None train service operates as revised.",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Colchester,Norwich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Manningtree,Stowmarket": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket."
+            ],
+            "Manningtree,Diss": [
+                "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Manningtree:Norwich": [
+                "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Ipswich:Diss": [
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
+                "Local Bus 459 operates Stowmarket to Diss."
+            ],
+            "Ipswich:Norwich": [
+                "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
+                "Local Bus 459 operates Stowmarket to Diss.",
+                "Establish rail replacement bus link Diss-Norwich."
+            ],
+            "Stowmarket:Norwich": [
+                "Local Bus 459 operates Stowmarket to Diss.",
+                "Establish rail replacement bus link Diss-Norwich."
+            ]
+            
+        }
+    }
+}

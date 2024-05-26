@@ -1,0 +1,548 @@
+body{
+    font-family:'Fira Code', monospace;
+    background-color: rgba(30, 30, 30, 1);
+    padding-bottom: 5%;
+}
+#loading{
+    z-index: 1;
+    position: fixed;
+    width: 100%; 
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+.chat-block-user {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.chat-block-bot {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.chat-block-general{
+    padding: 1% 0;
+}
+
+.bot_response {
+    display: flex;
+    flex-direction: row; /* Aligns children (like <p>) vertically */
+    /*align-items: center; /* Center aligns children horizontally */
+    flex-wrap: wrap;
+    float: left;
+    /* min-height: 80px; */
+    max-width: 80%;
+    padding: 10px 0 ;
+    box-sizing: border-box;
+    /* border: 3px solid blueviolet; */
+    border-radius: 20px;
+    /* margin: 7px;
+    margin-bottom: 50px; */
+    position: relative;
+    background-color: rgb(49, 49, 49);
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    overflow-wrap: break-word; /* Ensures that long words are broken and wrapped */
+    word-wrap: break-word; /* Older browsers */
+    align-items: center;
+    display: block;
+}
+
+.user_input {
+    display: flex;
+    flex-wrap: wrap;
+    float: right;
+    /* min-height: 60px; */
+    max-width: 80%;
+    /* border: 3px solid blueviolet ; */
+    padding: 10px 0;
+    border-radius: 20px;
+    /* margin: 7px; */
+    /* margin-bottom: 50px; */
+    position: relative;
+    background-color: rgb(49, 49, 49);
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    align-items: center;
+    flex-direction: row-reverse;
+    display: block;
+}
+.LogoDiv{
+    display: flex;
+    flex-wrap: wrap;
+    float: right;
+    min-height: 60px;
+    width: 60px;
+    /* border: 3px solid blueviolet ; */
+    border-radius: 60px;
+    margin: 7px 7px 7px 14px;
+    /* margin-bottom: 50px; */
+    position: relative;
+    background-color:rgba(80, 80, 80);
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    animation: borderAnim 2s infinite;
+}
+.LogoDivBot{
+    display: flex;
+    flex-wrap: wrap;
+    float: left;
+    min-height: 60px;
+    width: 60px;
+    border: 3px solid blueviolet ;
+    border-radius: 60px;
+    margin: 7px 14px 7px 7px;
+    /* margin-bottom: 58px; */
+    position: relative;
+    background-color:rgba(120, 120, 120);
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    animation: borderAnim 2s infinite;
+}
+.logoImg{
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+}
+
+.am{
+    color:  rgb(255, 255, 255);
+    margin: 5px 11px;
+    padding: 0; /* Ensures no extra space inside the p element */
+    width: auto; /* Lets the width be determined by content and container */
+    max-width: 100%; /* Prevents the p tag from extending beyond the .bot_response */
+    
+}
+.bot_response p {
+    color:  rgb(255, 255, 255);
+    margin: 5px 11px;
+    padding: 0; /* Ensures no extra space inside the p element */
+    width: auto; /* Lets the width be determined by content and container */
+    max-width: 100%; /* Prevents the p tag from extending beyond the .bot_response */
+    
+}
+
+#contentContainer{
+    display: flex;
+    flex-direction: column; 
+    transition: filter 0.9s ease-in-out;
+    padding: 0 20%;
+}
+
+#welcome{
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 510px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    animation: borderAnim 2s infinite;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+#delayInfo{
+    position: fixed;
+    font-size: large;
+    top: 70%;
+    left: 32%;
+    transform: translate(-50%, -80%);
+    width: 200px;
+    height: 120px;
+    background-color: rgba(5, 1, 28, 0.911);
+    border: 1px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+#fareInfo{
+    position: fixed;
+    font-size: large;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 200px;
+    height: 120px;
+    background-color: rgba(5, 1, 28, 0.911);
+    border: 1px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+#fareInfo:hover, #delayInfo:hover , #diversionsInfo:hover{
+    animation: scatter-hover 0.3s linear infinite;
+    border-color: #8b4efe;
+    border-width: 3px;
+}
+#fareP{
+    font-size: 40px;
+    margin-top: 0px;
+}
+#diversionsInfo{
+    position: fixed;
+    font-size: large;
+    top: 70%;
+    left: 68%;
+    transform: translate(-50%, -80%);
+    width: 200px;
+    height: 120px;
+    background-color: rgba(5, 1, 28, 0.911);
+    border: 1px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+.welcome_h{
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+    border-right: 10px solid blueviolet;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: blueviolet;  
+    font-size: 18px; 
+    font-family:'Fira Code', monospace; 
+    animation: typing 3.5s steps(40),
+    blink-caret .75s  infinite;
+    animation-delay: 2s;
+}
+.userName_h{
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 auto;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    color: blueviolet;  
+    font-size: 18px; 
+    font-family:'Fira Code', monospace; 
+}
+
+@keyframes typing {
+    from { width: 0;}
+    to { width: 50%;}
+}
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: blueviolet; }
+  }
+
+
+
+#form1 {
+    left: 0;
+    right: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    position: fixed;
+    bottom: 3px;
+    transition: filter 0.9s ease-in-out;
+}
+
+#input1 {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px;
+    border: 3px solid blueviolet;
+    height: 70px;
+    background-color:rgba(0, 0, 0, 0.9);
+    color: azure;
+    outline: none;
+}
+#input1:focus {
+    border: 3px solid blueviolet; /* Odaklandığında border rengini değiştirme */
+}
+
+
+.submit1 {
+    border: 3px solid blueviolet;
+    border-left: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color:rgba(0, 0, 0, 0.9);
+    color: blueviolet;
+    width: 60px;
+}
+.micro{
+    border-left: 0px;
+    border-right: 0px;
+    border-top: 3px solid blueviolet;
+    border-bottom: 3px solid blueviolet;
+    width: 50px;
+    background-color:rgba(0, 0, 0, 0.9);
+}
+.voice{
+    border-left: 3px solid blueviolet;
+    border-right: 0px;
+    border-top: 3px solid blueviolet;
+    border-bottom: 3px solid blueviolet;
+    width: 50px;
+    background-color:rgba(0, 0, 0, 0.9);
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.bgVideo{
+    z-index: -1;
+    position: fixed;
+    width: 100%; 
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    object-fit: cover;
+    filter: brightness(0.5);
+}
+.listening{
+    z-index: 1;
+    margin-top: 1px;
+}
+.image{
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    object-fit: cover;
+    border-radius: 50px;
+}
+
+.blur {
+    filter: blur(20px); 
+    transition: filter 0.9s ease-in-out;
+}
+
+
+@keyframes borderAnim {
+    0% {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #8b4efe; 
+    }
+    100% {
+        border-color: transparent;
+    }
+}
+
+#pop_up  {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+    color: blueviolet;
+    border-radius: 50px;
+    animation: borderAnim 2s infinite;
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+}
+
+#end_listening{
+   margin-top: 200px;
+   background-color: rgba(139, 78, 254, 0.1);
+   color: blueviolet;
+   border-radius: 5px;
+   height: 25px;
+   border-color: blueviolet;
+}
+.fa-microphone{
+    color: red;
+}
+.fa-volume-high{
+    color: red;
+}
+button p{
+    font-size: xx-small;
+    color: #8b4efe;
+    margin-bottom: 0.5px;
+}
+#scroll{
+  position: fixed;
+  z-index: 10;
+  top: 80%;
+  left: 48%;
+  right: 50½;
+  opacity: 0;
+  background-color: rgba(1, 1, 2, 0.696);
+  color: #8b4efe;
+  font-size: large;
+  height: 50px;
+  width: 50px;
+  border-radius: 24px;
+  border:2px solid blueviolet;
+  transition: opacity 0.4s ease-in-out 
+  
+}
+#notification{
+    position: fixed;
+    top: 57.6%;
+    left: 50%;
+    transform: translate(-50%, 190%);
+    width: 250px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid ;
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+    border-radius: 50px;
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    font-size: small;
+}
+#jm{
+    color: red;
+}
+
+#waiting{
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, 190%);
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 1px solid ;
+    padding: 20px;
+    text-align: center;
+    z-index: 1;
+    border-radius: 50px;
+    opacity: 0;
+    transition: opacity 0.9s ease-in-out;
+    font-size: 20px;
+    border-color: blueviolet;
+    border-width: 2px;
+    animation: borderAnim 2s infinite;
+}
+#waiting_p{
+    color: blueviolet;
+    margin-top: 0px;
+    font-size: 25px;
+}
+#waiting_p_csv{
+    color: blueviolet;
+    margin-top: 60px;
+    font-size: 90px;
+}
+#waiting_p_csv_message{
+    color: blueviolet;
+    top: 10%;
+    font-size: 18px;
+}
+
+@media only screen and (max-width: 600px) {
+    #fareInfo{
+        position: fixed;
+        font-size: x-small;
+        top: 70%;
+        left: 50%;
+        transform: translate(-50%, -80%);
+        width: 70px;
+        height: 50px;
+        background-color: rgba(5, 1, 28, 0.911);
+        border: 1px solid blueviolet;
+        padding: 20px;
+        text-align: center;
+        z-index: -1;
+        color: blueviolet;
+        border-radius: 50px;
+        opacity: 0.9;
+        transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+  }
+
+  #diversionsInfo{
+    position: fixed;
+    font-size: x-small;
+    top: 70%;
+    left: 78%;
+    transform: translate(-50%, -80%);
+    width: 70px;
+    height: 50px;
+    background-color: rgba(5, 1, 28, 0.911);
+    border: 1px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    opacity: 0.9;
+  }
+  #delayInfo{
+    position: fixed;
+    font-size: x-small;
+    top: 70%;
+    left: 22%;
+    transform: translate(-50%, -80%);
+    width: 70px;
+    height: 50px;
+    background-color: rgba(5, 1, 28, 0.911);
+    border: 1px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+#fareP{
+    font-size: 15px;
+    margin-top: 0px;
+}
+#welcome{
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    width: 300px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px solid blueviolet;
+    padding: 20px;
+    text-align: center;
+    z-index: -1;
+    color: blueviolet;
+    border-radius: 50px;
+    animation: borderAnim 2s infinite;
+    opacity: 0.9;
+    transition: opacity 0.9s ease-in-out , filter 0.9s ease-in-out;
+}
+
+}

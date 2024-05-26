@@ -1,0 +1,80 @@
+\section{Testing}
+\subsection{Unit Testing}
+\subsection{Integration Testing}
+
+\begin{longtable}{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
+    \hline
+    \textbf{Test ID} & \textbf{Integration point} & \textbf{Test Description} & \textbf{Expected result} \\
+    \hline
+    \endfirsthead
+    \multicolumn{4}{c}%
+    {\tablename\ \thetable\ -- \textit{}} \\
+    \hline
+    \textbf{Test ID} & \textbf{Integration point} & \textbf{Test Description} & \textbf{Expected result} \\
+    \hline
+    \endhead
+    \hline \multicolumn{4}{|r|}{\textit{}} \\ \hline
+    \endfoot
+    \hline
+    \endlastfoot
+    
+    P1 & Part 1 (Finding the cheapest fare) & Test the functionality of finding the cheapest fare. Start a conversation to provide the required information for ticket booking. & Chat Bot returns the cheapest train ticket fare. \\
+    \hline
+    
+    P2 & Part 2 (Delay Estimation) & Test delay estimation intelligence of the Chat-bot. Ask for the delayed train's information and get the predicted arriving time. & Chat-bot estimates the delay correctly regarding to provided details. \\
+    \hline
+    
+    P3 & Part 3 (Contingency recommendations) & Test the contingency function of the Chat-bot. Give a to get a contingency plan for that circumstance. & Chat-bot provides appropriate probability recommendations according to predefined rules and regulations \\
+    \hline
+    
+    TC1 & Part 1 and Part 2 & Initialize a conversation about fare search. After completing the train ticket search, ask for delay estimation. & Chat-bot finds the cheapest fare and estimated the delay correctly without being influenced by each other. \\
+    \hline
+    
+    TC2 & Part 2 and Part 3 & Start conversation for both part 2 and 3 respectively, and examine the results to make sure that the part 2 and 3 not effect each other. & Chat-bot should perform the delay estimation and contingency plan recommendation correctly. \\
+    \hline
+    
+    TC3 & Part 1 and Part 3 & Start conversation for both part 1 and 3 respectively, and examine the results to make sure that the part 1 and 3 not effect each other. &  Chat-bot should perform the cheapest train fare search and delay estimation correctly. \\
+    \hline
+    
+    TC4 & Contradictions & Test the contradiction feature that restricts the user switch to another subject while an ongoing conversation takes place about something else. & Chat-bot displays a informative message which says to switch to another conversation either reset the current conversation or finalise it. \\
+    \hline
+    
+    GUI & GUI Integration & Test the integration of the graphical user interface with all parts of the chat-bot. Perform tasks related to ticket finding, delay estimation and contingency recommendation using the GUI. & GUI handles the conversation about all parts flawlessly and orients the user for next steps.  \\
+    \hline
+    
+    \end{longtable}
+    
+% \subsection{System Testing} --> To be reviewed later 
+\subsection{Usability Testing}
+Two UEA students earning master's degrees, one in business and the other in computer science, conducted the usability testing demonstrated in the table below:-. 
+
+\begin{longtable}{|c|p{3cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Preconditions} & \textbf{Test Steps} & \textbf{Expected Results} & \textbf{Actual Results} \\ \hline
+\endfirsthead
+\hline
+\textbf{ID} & \textbf{Description} & \textbf{Preconditions} & \textbf{Test Steps} & \textbf{Expected Results} & \textbf{Actual Results} \\ \hline
+\endhead
+TC01 & Find cheapest ticket for specified route, date and time & NodeJS server is up and running & 1. Enter departure and arrival locations \newline 2. Enter travel date and time \newline 3. Submit search query & Display cheapest ticket for the specified route, date and time & One-way ticket details displayed: Ticket price, Wesbite name and link  \\ \hline
+
+TC02 & Find cheapest ticket for partially matched train stations & NodeJS server is up and running & 1. Enter partially matched departure and arrival stations & Display a list of partially matched available stations with input & Partially matched stations displayed asking user to give precise name choosing from the output \\ \hline
+
+TC03 & Find cheapest ticket if time is not provided & NodeJS server is up and running & 1. Provide departing and arriving stations  \newline 2. Enter date but not time  \newline  3. Submit search query & Chatbot should ask the user to provide time & Time missing warning displayed on GUI \\ \hline
+
+TC04 & Find cheapest ticket when stations are mis-spelled & NodeJS server is up and running & 1. Enter departure and arrival locations with misspelled words \newline 2. Submit search query & Display a list of partially matched available stations with input & Partially matched stations displayed asking user to give precise name choosing from the output \\ \hline
+
+TC05 & Find cheapest return ticket & NodeJS server is up and running & 1. Enter departure and arrival locations \newline 2. Enter travel date and time \newline 3. Perform one-way ticket search \newline 4. Ask for return \newline 5. Submit search & Display return ticket cheapest fare details: Ticket price, website name and link & Return ticket details are displayed \\ \hline
+
+TC06 & Find train delay by providing current or last departed station and time along with time from origin station & NodeJS server is up and running & 1. Enter current or previously departed station \newline 2. Enter departure time of previously departed station \newline 3. Enter departure time from origin station & Train delay to destination Norwich should be displayed & Delayed time is displayed on GUI \\ \hline
+
+TC07 & Find train delay without providing departed time of origin station & NodeJS server is up and running & 1. Enter current or previously departed station \newline 2. Enter departure time of previously departed station \newline 3. Click submit button & Chatbot should ask the user to enter the departed time from origin station & Departed time from origin missing warning is displayed on GUI \\ \hline
+
+TC08 & Find train delay of an unknown station & NodeJS server is up and running & 1. Enter current or previously departed station which is not betweeen london and norwich \newline 2. Click submit button & Chatbot should try partial matching and display warning message of station not found & Station not found message is displayed \\ \hline
+
+TC09 & Find contingency plans for partial or full link blockage for valid stations on great easter track & NodeJS server is up and running & 1. Enter blockage type as full or partial \newline 2. Enter train stations on great eastern track \newline 3. Click submit button & Contingency plans should be displayed as per the blockage and stations given & Contingency plans displayed accordingly \\ \hline
+
+TC10 & Find contingency plans without providing the blockage type & NodeJS server is up and running & 1. Enter train stations on great eastern track \newline 3. Click submit button & Chatbot should ask the user to enter the blockage type providing a hint to choose either partial of full & Missing blockage type warning is displayed on GUI \\ \hline
+
+\caption{Usability Test Cases}
+\label{tab:usability_testing}
+\end{longtable}

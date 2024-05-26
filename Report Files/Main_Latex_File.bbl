@@ -1,0 +1,35 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Bird \harvardand\ Klein}{2009}{NLTK}
+Bird, Steven, E.~L. \harvardand\ Klein, E.  \harvardyearleft 2009\harvardyearright , {\em Natural Language Processing with Python}.
+
+\harvarditem{Chen \harvardand\ Guestrin}{2016}{chen2016xgboost}
+Chen, T. \harvardand\ Guestrin, C.  \harvardyearleft 2016\harvardyearright , Xgboost: A scalable tree boosting system, {\em in} `Proceedings of the 22nd acm sigkdd international conference on knowledge discovery and data mining', pp.~785--794.
+
+\harvarditem[Harris et~al.]{Harris, Millman, van~der Walt, Gommers, Virtanen, Cournapeau, Wieser, Taylor, Berg, Smith, Kern, Picus, Hoyer, van Kerkwijk, Brett, Haldane, del R{\'{i}}o, Wiebe, Peterson, G{\'{e}}rard-Marchant, Sheppard, Reddy, Weckesser, Abbasi, Gohlke \harvardand\ Oliphant}{2020}{harris2020array}
+Harris, C.~R., Millman, K.~J., van~der Walt, S.~J., Gommers, R., Virtanen, P., Cournapeau, D., Wieser, E., Taylor, J., Berg, S., Smith, N.~J., Kern, R., Picus, M., Hoyer, S., van Kerkwijk, M.~H., Brett, M., Haldane, A., del R{\'{i}}o, J.~F., Wiebe, M., Peterson, P., G{\'{e}}rard-Marchant, P., Sheppard, K., Reddy, T., Weckesser, W., Abbasi, H., Gohlke, C. \harvardand\ Oliphant, T.~E.  \harvardyearleft 2020\harvardyearright , `Array programming with {NumPy}', {\em Nature} {\bf 585}(7825),~357--362.
+\newline\harvardurl{https://doi.org/10.1038/s41586-020-2649-2}
+
+\harvarditem{Hunter}{2007}{Hunter:2007}
+Hunter, J.~D.  \harvardyearleft 2007\harvardyearright , `Matplotlib: A 2d graphics environment', {\em Computing in Science \& Engineering} {\bf 9}(3),~90--95.
+
+\harvarditem{{\em Lemmatization}}{n.d.}{lemmatization}
+{\em Lemmatization}  \harvardyearleft n.d.\harvardyearright , \url{https://www.techtarget.com/searchenterpriseai/definition/lemmatization}.
+\newblock Accessed: 2024-05-19.
+
+\harvarditem{pandas~development team}{2020}{reback2020pandas}
+pandas~development team, T.  \harvardyearleft 2020\harvardyearright , `pandas-dev/pandas: Pandas'.
+\newline\harvardurl{https://doi.org/10.5281/zenodo.3509134}
+
+\harvarditem[Pedregosa et~al.]{Pedregosa, Varoquaux, Gramfort, Michel, Thirion, Grisel, Blondel, Prettenhofer, Weiss, Dubourg, Vanderplas, Passos, Cournapeau, Brucher, Perrot \harvardand\ Duchesnay}{2011}{scikit-learn}
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M. \harvardand\ Duchesnay, E.  \harvardyearleft 2011\harvardyearright , `Scikit-learn: Machine learning in {P}ython', {\em Journal of Machine Learning Research} {\bf 12},~2825--2830.
+
+\harvarditem{Team}{2024}{bing-gpt4}
+Team, B.~S.  \harvardyearleft 2024\harvardyearright , `Bing search powered by gpt-4', {\em Bing Blog} .
+\newline\harvardurl{https://www.bing.com/blog/bing-search-powered-by-gpt-4}
+
+\harvarditem{Waskom}{2021}{Waskom2021}
+Waskom, M.~L.  \harvardyearleft 2021\harvardyearright , `seaborn: statistical data visualization', {\em Journal of Open Source Software} {\bf 6}(60),~3021.
+\newline\harvardurl{https://doi.org/10.21105/joss.03021}
+
+\end{thebibliography}

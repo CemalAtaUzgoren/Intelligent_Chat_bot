@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="GUI.css">
+    <script src="https://kit.fontawesome.com/67bd86ffdc.js" crossorigin="anonymous"></script>
+
+    </head>
+<body>
+    <div id="notification">
+        <p id="message"></p>
+    </div>
+
+    <button id="scroll" onclick="scrollToBottom()">
+        <i class="fa-solid fa-arrow-down fa-beat"></i>
+    </button>
+
+    <div id="pop_up" >
+        <p class="listening">Listening <i class="fas fa-regular fa-ellipsis fa-bounce" style="color: #B197FC;"></i></p>
+
+        <img class="image" src="image_processing20200323-8894-trz0hk.gif" alt="GIF" width="250" height="250">
+
+        <button id="end_listening" onclick="closePopup()">
+            End Listening <i class="fa-solid fa-microphone-slash" style="color: #B197FC;"></i>
+        </button>
+    </div>
+    <div id="pop_up" class="csv">
+        <p id="waiting_p_csv_message"> Searching ...</p> 
+        <p id="waiting_p_csv"><i class="fa-solid fa-spinner fa-spin" style="color: #B197FC;"></i></p> 
+    </div>
+
+   <!-- <div id="waiting" >
+       <p id="waiting_p"><i class="fa-solid fa-spinner fa-spin" style="color: #B197FC;"></i></p> 
+    </div>-->
+
+
+    <img src="icon animation.gif" alt="GIF" id="loading" >
+
+    <!-- <video autoplay muted loop playsinline class="bgVideo">
+        <source src="Background_vid.mp4" type="video/mp4">
+    </video> -->
+
+    <div id="welcome" >
+        <img class="image" id="welcome_gif" src="VTES Voice Robot logo animation.gif" alt="GIF" width="1000" height="250">
+        <h1 class="welcome_h">How Can I Help You Today?</h1>
+        <h1 class="userName_h" id="whu"></h1>
+    </div>
+
+    <div id="fareInfo" onclick="startConversationShortCut('fareInfo')">
+        <p id="fareP"><i class="fa-solid fa-train-subway" style="color: #B197FC;"></i></p> 
+        <p>Train Fare Search</p>
+    </div>
+
+    <div id="delayInfo" onclick="startConversationShortCut('delayInfo')">
+        <p id="fareP"><i class="fa-solid fa-stopwatch" style="color: #B197FC;"></i></p>
+        <p>Delay Estimation</p>
+    </div>
+
+    <div id="diversionsInfo" onclick="startConversationShortCut('diversionsInfo')">
+        <p id="fareP"><i class="fa-solid fa-timeline" style="color: #B197FC;"></i></p>
+        <p>Contingencies</p>
+    </div>
+
+
+    <div id="contentContainer" >  
+    </div> 
+
+
+        <form method="post" id="form1" action="/ChatBot">
+            <button class="voice" id="voice1" type="button" onclick="vouiceOverActivation()">
+                <i class="fa-solid fa-volume-high"></i>
+                <p>Voice</p>
+            </button>
+            <button class="micro" id="micro1" type="button" onclick="SwitchForListening()">
+                <i class="fa-solid fa-microphone"></i>
+                <p>V.C.</p>
+            </button>
+            <button class="micro jarvis" id="micro1" type="button" onclick="JARVIS_button()">
+                <p id="jm">JARVIS MODE</p>
+            </button>
+            <input type="text" id="input1" placeholder="  How Can I Help You ?" name="userInput" required>
+            <button class="submit1" type="submit" id="submitBut1">
+                <i class="fas fa-solid fa-paper-plane" id="postBut"></i>
+                <p id="postButP">Magic!</p>
+            </button>
+        </form>
+       
+      <script>
+        localStorage.setItem("elements" , JSON.stringify([document.getElementById('postBut').outerHTML,document.getElementById('postButP').outerHTML]))
+
+        function startConversationShortCut(id){
+            const searchBar = document.getElementById('input1')
+            const magicBut = document.getElementById('submitBut1')
+            if (id == 'fareInfo'){
+                searchBar.value= "can you assist me in finding train ticket?"
+                magicBut.click()
+            }
+            else if (id == 'delayInfo'){
+                searchBar.value= "please predict a possible delay."
+                magicBut.click()
+            }
+            else if (id == 'diversionsInfo'){
+                searchBar.value= "can you tell me the contingency plan?"
+                magicBut.click()
+            }
+            
+        }
+        fetch('/ChatBot/username')
+                .then(response => response.json())
+                .then(data => {
+                    const username = data.username;
+                    console.log(username);
+                    const userH = document.getElementById('whu')
+                    userH.innerHTML = 'Hi ' + username
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        setTimeout(function() {
+            const myImage = document.getElementById('loading');
+            myImage.style.opacity=0
+
+        }, 2000);
+        setTimeout(function() {
+            const myImage = document.getElementById('loading');
+            const fareDiv = document.getElementById('fareInfo');
+            const delayDiv = document.getElementById('delayInfo');
+            const diversDiv = document.getElementById('diversionsInfo');
+            myImage.style.zIndex=-1
+            fareDiv.style.zIndex=1
+            delayDiv.style.zIndex=1
+            diversDiv.style.zIndex=1
+        }, 2500);
+
+        function toggleBlur() {
+            document.getElementById('contentContainer').classList.add('blur');
+            document.getElementById('form1').classList.toggle('blur');
+            document.getElementById('welcome').classList.add('blur');
+            document.getElementById('delayInfo').classList.add('blur');
+            document.getElementById('fareInfo').classList.add('blur');
+            document.getElementById('diversionsInfo').classList.add('blur');
+        }
+
+        function openPopup() {
+            var popup = document.getElementById('pop_up');
+            popup.style.display = 'block';
+            popup.style.opacity = '0'
+            setTimeout(function () {popup.style.opacity = '1'
+                                    popup.style.zIndex = '10'
+            }, 300); 
+            toggleBlur();
+            console.log('initialized.');
+        }
+
+        function deactivate_listening(){
+            let button = document.getElementById('pop_up')
+            document.getElementById('contentContainer').classList.remove('blur'); 
+            document.getElementById('form1').classList.remove('blur');
+            document.getElementById('welcome').classList.remove('blur');
+            document.getElementById('delayInfo').classList.remove('blur');
+            document.getElementById('fareInfo').classList.remove('blur');
+            document.getElementById('diversionsInfo').classList.remove('blur');
+            //button.style.display = 'none'; 
+            button.style.opacity ='0'
+            recognition.stop();
+            console.log('listening stoped.');
+        }
+        function closePopup(){
+            let button = document.getElementById('pop_up')
+            document.getElementById('contentContainer').classList.remove('blur'); 
+            document.getElementById('form1').classList.remove('blur');
+            document.getElementById('welcome').classList.remove('blur');
+            document.getElementById('delayInfo').classList.remove('blur');
+            document.getElementById('fareInfo').classList.remove('blur');
+            document.getElementById('diversionsInfo').classList.remove('blur');
+            //button.style.display = 'none'; 
+            button.style.opacity ='0'
+            recognition.stop();
+            isReady=false
+            console.log('listening stoped.');
+            //if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+              //  adjustVolume('unmute')
+            //}
+        }
+
+        function SwitchForListening(){
+            var microphoneIcon = document.getElementsByClassName('fa-microphone')[0];
+            const notification = document.getElementById('message')
+            const notification_div = document.getElementById('notification')
+            const button_p = document.getElementById('jm')
+            notification_div.style.opacity = '0'
+            setTimeout(function () {notification_div.style.opacity = '1'}, 300); 
+            if (isListening) {
+                refreshNeeded=false
+                isListening =false
+                recognition.stop();
+                microphoneIcon.style.color='red'
+                if (!(isListening && isTalk) && isJarvis){
+                        notification.innerHTML='JARVIS Deactivated'
+                        isJarvis=false
+                }else if(!isListening){
+                        notification.innerHTML='Voice Commands Deactivated'
+                }
+                notification.style.color='rgba(194, 36, 36, 0.7)'
+                notification_div.style.borderColor='rgba(194, 36, 36, 0.7)'
+                button_p.style.color='red'
+            } else { 
+                    isListening =true
+                    refreshNeeded=true
+                    recognition.start();
+                    microphoneIcon.style.color='green'
+                    if (isListening && isTalk){
+                        notification.innerHTML='JARVIS Activated'
+                    }else{
+                        notification.innerHTML='Voice Commands Activated'
+                    }
+                    notification.style.color='rgba(144, 230, 144, 0.7)'
+                    notification_div.style.borderColor='rgba(144, 230, 144, 0.7)'
+                }
+                if (isListening && isTalk){
+                        button_p.style.color='green'
+                        isJarvis=true
+                }else{
+                    isJarvis=false
+                }
+            setTimeout(function () {
+                if (isListening) {
+                    setTimeout(function () {notification_div.style.opacity = '0'}, 300); 
+                } else { 
+                    setTimeout(function () {notification_div.style.opacity = '0'}, 300);   
+                }
+            }, 1000);   
+                
+            
+        }
+
+        function voiceOver(bot_res){
+            if(isTalk){
+                const speech = new SpeechSynthesisUtterance(bot_res)//text to speech API
+                    const voice_sel = speechSynthesis.getVoices();
+                    speech.voice = voice_sel[0]
+                    speechSynthesis.speak(speech)
+            }
+        }
+        function clearSent(sent){
+           if (sent.includes('"')){
+            sent=sent.replaceAll('"','')
+           }
+           if (sent.includes(`/`)){
+            sent=sent.replaceAll('/','')
+           }
+           if (sent.includes(`\n`)){
+            sent=sent.replaceAll('\n','')
+           }
+           if (sent.includes(`\\n`)){
+            sent=sent.replaceAll('\\n','')
+           }
+           return sent
+        }
+
+        var isJarvis=false
+        var b=0
+        function JARVIS_button(){
+            var microphoneIcon = document.getElementsByClassName('fa-microphone')[0];
+            var voiceIcon = document.getElementsByClassName('fa-volume-high')[0];
+            const micro = document.getElementById('micro1')
+            const voice = document.getElementById('voice1')
+            const button_p = document.getElementById('jm')
+            if (!isJarvis){
+                b=0
+                if (!isListening){
+                    micro.click()
+                }
+                if (!isTalk){
+                    voice.click()
+                }
+                button_p.style.color='green'
+                isJarvis=true
+            }
+            else{
+                b=1
+                if (microphoneIcon.style.color == 'green'){
+                    micro.click()
+                }
+                if (voiceIcon.style.color=='green'){
+                    voice.click()
+                }
+                button_p.style.color='red'
+            }
+
+        }
+
+        var isTalk=false
+        function vouiceOverActivation(){
+            var voiceIcon = document.getElementsByClassName('fa-volume-high')[0];
+            const notification = document.getElementById('message')
+            const notification_div = document.getElementById('notification')
+            const button_p = document.getElementById('jm')
+            notification_div.style.opacity = '0'
+            setTimeout(function () {notification_div.style.opacity = '1'}, 300);
+            if(isTalk){
+                const a = voiceIcon.style.color
+                voiceIcon.style.color='red'
+                console.log(a)
+                isTalk=false 
+    
+                if ((isListening && !isTalk) && isJarvis){
+                        notification.innerHTML='JARVIS Deactivated'
+                        console.log('lyf')
+                        isJarvis=false
+                }
+                else if(!isTalk){
+                        notification.innerHTML='Voice Over Deactivated'
+                }
+                if(b==1){
+                    notification.innerHTML='JARVIS Deactivated'
+                    b=0
+                }
+
+                
+                notification.style.color='rgba(194, 36, 36, 0.7)'
+                notification_div.style.borderColor='rgba(194, 36, 36, 0.7)'
+                button_p.style.color='red'
+            }else{
+                voiceIcon.style.color='green'
+                isTalk=true
+                if (isListening && isTalk){
+                        notification.innerHTML='JARVIS Activated'
+                }else{
+                        notification.innerHTML='Voice Over Activated'
+                }
+                notification.style.color='rgba(144, 230, 144, 0.7)'
+                notification_div.style.borderColor='rgba(144, 230, 144, 0.7)'
+            }
+            if (isListening && isTalk){
+                        button_p.style.color='green'
+                        isJarvis=true
+            }else{
+                isJarvis=false
+            }
+            setTimeout(function () {
+                if (isListening) {
+                    setTimeout(function () {notification_div.style.opacity = '0'}, 300); 
+                } else { 
+                    setTimeout(function () {notification_div.style.opacity = '0'}, 300);   
+                }
+            }, 1000); 
+        }
+
+    var isReady=false
+    var refreshNeeded=true
+    var isListening =false
+    var iscomplicated=false
+    var isOnlySong=false
+    var complicatedSong=''
+    var complicatedArtist=''
+    var complicatedCounter =0
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+
+        var textInput = document.getElementById('input1');
+     
+        recognition.onstart = function() {
+            console.log('listening.....');
+            refreshNeeded=true
+            if(iscomplicated || isOnlySong){
+                complicatedCounter+=1
+                console.log(complicatedCounter)
+                openPopup()
+            }
+        };
+
+        recognition.onend = function() {
+            console.log('end');
+            console.log(refreshNeeded)
+            if(refreshNeeded){
+                if ((refreshNeeded && iscomplicated) || (refreshNeeded && isOnlySong)){
+                    if(complicatedCounter==1 && iscomplicated){
+                        voiceOver('now tell me the artist name')
+                        setTimeout(function() {recognition.start()}, 2000);
+                    }else if (complicatedCounter==0 && isOnlySong){
+                        setTimeout(function() {recognition.start()}, 3000);
+                    }
+                    else if (complicatedCounter==0){
+                        setTimeout(function() {recognition.start()}, 5000);
+                    }
+                }else{
+                    setTimeout(function() {recognition.start()}, 300);
+                }
+
+            }
+                
+        };
+
+        recognition.onresult = function(event) {
+            var interimTranscript = '';
+            var finalTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                var transcript = event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            if(finalTranscript.length>1){
+                const textArray = finalTranscript.toLowerCase()
+                console.log(textArray.split(' '))
+                const textArraySplitted = textArray.split(' ')
+
+                if(textArraySplitted.includes('jarvis')){
+                    isReady=true
+                    setTimeout(function() {openPopup()}, 200);
+                    voiceOver('yes sir')
+                    //if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                     //   adjustVolume('mute')
+                    //}
+                    
+                }
+             
+                if ((isReady && textArray =='close ')||(isReady && textArray =='go away ')||(isReady && textArray =='you may leave ')){
+                    
+                    closePopup()
+                    isReady=false
+                }
+
+                if((isReady && textArray =='i am back ') || (isReady && textArray =='i\'m back ') || ((isReady && textArray =='daddy is back ') )){
+                    var operation = 'open'
+                    
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('welcome back sir   ')
+                        voiceOver('initializing the welcoming procedure ')
+                        setTimeout(function() {SongPost('shoot to thrill','AC/DC',operation)}, 1000);
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                }
+
+                if( (isReady && (textArraySplitted.includes('stop') && textArraySplitted.includes('music')) ) || ( isReady && (textArraySplitted.includes('close') && textArraySplitted.includes('music')) ) || ( isReady && (textArraySplitted.includes('pause') && textArraySplitted.includes('music')) )){
+                    var operation2 = 'close'
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('certainly sir')
+                        SongPost('','',operation2)
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                    
+                }
+                
+                if((isReady && textArraySplitted.includes('play') && textArraySplitted.includes('spotify')) || (isReady && textArraySplitted.includes('open') && textArraySplitted.includes('spotify'))){
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        var flag = 0
+                        var flag2 = 0
+                        for(let i =0 ; i<textArraySplitted.length ; i++){
+                            if((textArraySplitted[i]=='play' && flag==0) || (textArraySplitted[i]=='open' && flag==0)){
+                                flag=i
+                            }else if ((textArraySplitted[i]=='spotify' && flag2==0)){
+                                flag2 = i
+                                if (textArraySplitted[i-1]=='on'){
+                                    flag2 = i-1
+                                }
+                            }
+                        }
+                        textArraySplitted.splice(flag2, textArraySplitted.length-1)
+                        textArraySplitted.splice(0, flag+1)
+
+                        console.log(textArraySplitted)
+                        
+                        if(textArraySplitted.includes('by')){
+                            var byCounter = 0
+                            for (let i=0 ; i<textArraySplitted.length ; i++){
+                                if (textArraySplitted[i] =='by'){
+                                    byCounter+=1
+                                }
+                            }
+                            if (byCounter == 1){
+                            
+                                console.log(textArraySplitted)
+                                let byIndex = textArraySplitted.indexOf('by');
+                                let songName = textArraySplitted.slice(0, byIndex).join(' ');
+                                let ArtistName = textArraySplitted.slice(byIndex + 1).join(' ');
+
+                                closePopup()
+                                voiceOver('with pleasure')
+                                SongPost(songName,ArtistName,'open')
+
+                            }else if (byCounter != 1){
+                                voiceOver('that was a bit complicated for me. Can you tell me music name only sir')
+                                iscomplicated=true
+                                isReady=false
+                                
+                            }
+                        }else{
+                            
+                            complicatedSong = textArraySplitted.join(' ');
+                            voiceOver('could you please tell me the artist name as well sir.')
+                            isOnlySong=true
+                            isReady=false
+                        }
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                }
+
+                if (iscomplicated && complicatedCounter==1){
+                    
+                    complicatedSong = textArray
+                
+                }
+
+                if(iscomplicated && complicatedCounter>1){
+                  
+                    complicatedArtist=textArray
+                    console.log(complicatedArtist,complicatedSong)
+                    SongPost(complicatedSong,complicatedArtist,'open')
+                    complicatedCounter=0
+                    iscomplicated = false
+                    complicatedSong=''
+                    complicatedArtist=''
+
+                }
+                if(isOnlySong && complicatedCounter==1){
+                  
+                    complicatedArtist=textArray
+                    console.log(complicatedArtist,complicatedSong)
+                    SongPost(complicatedSong,complicatedArtist,'open')
+                    complicatedCounter=0
+                    isOnlySong = false
+                    complicatedSong=''
+                    complicatedArtist=''
+
+                }
+                if (isReady && textArraySplitted.includes('mute') || ((isReady && textArraySplitted.includes('volume'))&&(textArraySplitted.includes('off') || textArraySplitted.includes('mute') || textArraySplitted.includes('deactivate') || textArraySplitted.includes('silent')) )){
+                    var operation = 'mute'
+                    
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('certainly sir.')
+                        adjustVolume(operation)
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                }
+
+                if (isReady && textArraySplitted.includes('unmute') || ((isReady && textArraySplitted.includes('volume'))&&(textArraySplitted.includes('on') || textArraySplitted.includes('unmute') || textArraySplitted.includes('activate')) )){
+                    var operation = 'unmute'
+                   
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('certainly sir.')
+                        adjustVolume(operation)
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                }
+
+                if ((isReady && textArraySplitted.includes('volume')) && ( textArraySplitted.includes('increase') || textArraySplitted.includes('up') || textArraySplitted.includes('elevate') || textArraySplitted.includes('loud') || textArraySplitted.includes('louder') || textArraySplitted.includes('more') ) ){
+                    var operation = 'volumeUp'
+                    
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('certainly sir.')
+                        adjustVolume(operation)
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+
+                }
+
+                if ( (isReady && textArraySplitted.includes('volume')) && ( textArraySplitted.includes('decrease') || textArraySplitted.includes('down') || textArraySplitted.includes('reduce') || textArraySplitted.includes('softer') || textArraySplitted.includes('soft') || textArraySplitted.includes('less') ) ){
+                    var operation = 'volumeDown'
+                  
+                    closePopup()
+                    if (navigator.platform.toUpperCase().indexOf('MAC') >= 0){
+                        voiceOver('certainly sir.')
+                    adjustVolume(operation)
+                    }else if(navigator.userAgent.indexOf("Windows") >= 0){
+                        voiceOver('this feature is not supported on windows computers sir. ')
+                    }
+                }
+
+                if (isReady && !textArraySplitted.includes('jarvis')){
+                   
+                    textInput.value = finalTranscript;
+                    var postButton = document.getElementsByClassName('submit1')[0];
+                    postButton.click()
+                    isReady=false
+                }
+               
+                deactivate_listening()
+            }
+        };
+    } else {
+        console.error('Web Speech API is not supported in this browser.');
+    }
+//Add event to post form and create div elemant to accommodate user inputs. 
+    var only_for_once = [0,0,0,0,0,0,0,0,0   ,0,0,0,0,0]
+    localStorage.setItem('only_for_once', JSON.stringify(only_for_once));
+    document.getElementById('form1').addEventListener('submit', function (event) {
+        event.preventDefault();  // prevent forms default post method
+        //creating divs for user inputs
+        const content_container = document.getElementById('contentContainer')
+        const userContainer = document.createElement('div')
+        const Newdiv = document.createElement('div')
+        userContainer.className = 'chat-block-user chat-block-general';
+        const DivForLogo = document.createElement('div')
+        const p_for_div = document.createElement('p')
+        const logo_img_user = document.createElement('img')
+        logo_img_user.src='4675250.png'
+        content_container.appendChild(userContainer)
+        userContainer.appendChild(DivForLogo)
+        userContainer.appendChild(Newdiv)
+        Newdiv.appendChild(p_for_div)
+        DivForLogo.appendChild(logo_img_user)
+
+        Newdiv.classList.add('user_input')
+        DivForLogo.classList.add('LogoDiv')
+        logo_img_user.classList.add('logoImg')
+        p_for_div.classList.add('am')
+        
+
+        const welcome_div = document.getElementById('welcome')
+        const faresInfo = document.getElementById('fareInfo')
+        const delayInfo = document.getElementById('delayInfo')
+        const diversionsInfo = document.getElementById('diversionsInfo')
+        welcome_div.style.opacity = '0'
+        faresInfo.style.opacity='0'
+        delayInfo.style.opacity='0'
+        diversionsInfo.style.opacity='0'
+        faresInfo.style.zIndex='-10'
+        delayInfo.style.zIndex='-10'
+        diversionsInfo.style.zIndex='-10'
+        //getLocation()
+        const UserInp = document.getElementById('input1').value
+        p_for_div.innerHTML = 'YOU:  ' + UserInp;
+        setTimeout(function () {Newdiv.style.opacity = '1'}, 300); //for animations
+        setTimeout(function () {DivForLogo.style.opacity = '1'}, 300);
+
+        var formData = new FormData(this);//New form object
+
+        //const processPopUp = document.getElementById('waiting')
+        const postPlane = document.getElementById('postBut')
+        const postP = document.getElementById('postButP')
+        Loader()
+        dinamicLoaderContent(0)
+        document.getElementById("input1").readOnly = true;
+        //processPopUp.style.opacity = '1'
+        postPlane.remove();
+        postP.remove();
+        var subbutton = document.getElementById('submitBut1');
+        var waitingSpinner = '<p id="waiting_p"><i class="fa-solid fa-spinner fa-spin" style="color: #B197FC;"></i></p>';    
+        subbutton.innerHTML = waitingSpinner;
+        document.getElementById('form1').reset()
+        scrollToBottom()
+        // sending form information to server by using AJAX to make post resquests without reloding the page.
+        var xhr = new XMLHttpRequest();// new request
+        xhr.open('POST', '/ChatBot', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function () {
+
+            if (xhr.status === 200) {// if request is successful , then add the chatBot response to the div.
+                document.getElementById("input1").readOnly = false;
+                var jsonResponse = JSON.parse(xhr.responseText);//using the string comes from server side.
+                var bot_res = JSON.stringify(jsonResponse.message);
+                console.log('Server response:', bot_res);
+
+                const content_container = document.getElementById('contentContainer')
+                const BotContainer = document.createElement('div')
+                BotContainer.className = 'chat-block-bot chat-block-general';
+                const Newdiv = document.createElement('div')
+                const DivForLogo = document.createElement('div')
+                const logo_img = document.createElement('img')
+                logo_img.src='icons8-chatgpt-512.png'
+                content_container.appendChild(BotContainer)
+                BotContainer.appendChild(DivForLogo)
+                BotContainer.appendChild(Newdiv)
+                DivForLogo.appendChild(logo_img)
+
+                part3outputParse(bot_res,Newdiv)// contingency UI handling function.
+
+                console.log(bot_res.split('CMP_7028B'))
+                const splitted_bot_res = bot_res.split('CMP_7028B')
+                var only_for_once_control =[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                var only_for_once_normal = 0
+                const extracted = document.createElement('p')
+                for (let j = 0 ; j<15;j++){
+                    for (let i = 0 ; i<splitted_bot_res.length ;i++){
+                       
+                        if (splitted_bot_res[i] == 'Departing Station:' && j == 0 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_Dep_sta = document.createElement('p')
+                            p_for_Dep_sta.classList.add('am')
+                            p_for_Dep_sta.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_Dep_sta.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_Dep_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1])
+                        }
+                        else if (splitted_bot_res[i] == 'Arriving Station:' && j == 1 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_Arr_sta = document.createElement('p')
+                            p_for_Arr_sta.classList.add('am')
+                            p_for_Arr_sta.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_Arr_sta.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_Arr_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1])
+                        }
+                        else if (splitted_bot_res[i] == 'MultipleMatches:' && j == 2 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            let b=JSON.parse(localStorage.getItem('only_for_once'));
+                            if(b[0]==0 && b[1]==0){
+                                var splitted_Multi_loc = ((splitted_bot_res[i+1].replace('[', "")).replace(']', "")).split(', ');
+                                const p_for_Multi_info = document.createElement('p')
+                                p_for_Multi_info.classList.add('am')
+                                p_for_Multi_info.innerHTML = '- Provided stations are not exactly matching with non of the stations. Closest station names depending to your search are below. Please make selection from the below list.'
+                                p_for_Multi_info.style.color = "orange"
+                                Newdiv.appendChild(p_for_Multi_info)
+                                voiceOver(p_for_Multi_info.innerHTML)
+                            }
+                            else if(b[0]==0){
+                                var splitted_Multi_loc = ((splitted_bot_res[i+1].replace('[', "")).replace(']', "")).split(', ');
+                                const p_for_Multi_info = document.createElement('p')
+                                p_for_Multi_info.classList.add('am')
+                                p_for_Multi_info.innerHTML = '- The departing station that provided is not exactly matching with non of the stations. Closest station names depending to your search are below. Please make selection from the below list.'
+                                p_for_Multi_info.style.color = "orange"
+                                Newdiv.appendChild(p_for_Multi_info)
+                                voiceOver(p_for_Multi_info.innerHTML)
+                            }
+                            else if(b[1]==0){
+                                var splitted_Multi_loc = ((splitted_bot_res[i+1].replace('[', "")).replace(']', "")).split(', ');
+                                const p_for_Multi_info = document.createElement('p')
+                                p_for_Multi_info.classList.add('am')
+                                p_for_Multi_info.innerHTML = '- The arriving station that provided is not exactly matching with non of the stations. Closest station names depending to your search are below. Please make selection from the below list.'
+                                p_for_Multi_info.style.color = "orange"
+                                Newdiv.appendChild(p_for_Multi_info)
+                                voiceOver(p_for_Multi_info.innerHTML)
+                            }
+                            if(b[0]==0 ||b[1]==0){
+                                for(let k = 0 ;k<splitted_Multi_loc.length;k++){
+                                    const p_for_Multi = document.createElement('p')
+                                    p_for_Multi.classList.add('am')
+                                    p_for_Multi.innerHTML = splitted_Multi_loc[k]
+                                    console.log(splitted_Multi_loc[k])
+                                    Newdiv.appendChild(p_for_Multi)
+                                    let a=JSON.parse(localStorage.getItem('only_for_once'));
+                                    a[j] = 1
+                                    console.log(a[j])
+                                    localStorage.setItem('only_for_once', JSON.stringify(a));
+                                    console.log(localStorage.getItem('only_for_once'))
+                                    voiceOver(p_for_Multi.innerHTML)
+                                }
+
+                            } 
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                        }
+                        else if (splitted_bot_res[i] == 'Time:' && j == 3 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_time = document.createElement('p')
+                            p_for_time.classList.add('am')
+                            p_for_time.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_time.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_time)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1])
+                        }
+                        else if (splitted_bot_res[i] == 'Date:' && j == 4 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_date = document.createElement('p')
+                            
+                            if (splitted_bot_res.includes('PastDate')){
+                                p_for_date.innerHTML = ` IMPORTANT NOTE: Date can't be of previous day. You have entered ${splitted_bot_res[i+1].replace('"','')}. Please enter minimum today's date.`
+                                p_for_date.classList.add('am')
+                                p_for_date.style.color = "rgb(43, 195, 226)"
+                            }else{
+                                p_for_date.innerHTML = ('- ' + splitted_bot_res[i] + splitted_bot_res[i+1]).replace('"','')
+                                p_for_date.classList.add('am')
+                                p_for_date.style.color = "chartreuse"
+                                let a=JSON.parse(localStorage.getItem('only_for_once'));
+                                a[j] = 1
+                                localStorage.setItem('only_for_once', JSON.stringify(a));
+                            }
+                    
+                            Newdiv.appendChild(p_for_date)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1])
+                        }
+                        else if (splitted_bot_res[i] == 'Website Name:' && j == 5 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_Web_name = document.createElement('p')
+                            p_for_Web_name.classList.add('am')
+                            p_for_Web_name.innerHTML = '- ' + splitted_bot_res[i] + splitted_bot_res[i+1]
+                            Newdiv.appendChild(p_for_Web_name)
+                            p_for_Web_name.style.color = "chartreuse"
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1])
+                        }
+                        else if (splitted_bot_res[i] == 'Price:' && j == 6 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const p_for_price = document.createElement('p')
+                            p_for_price.classList.add('am')
+                            p_for_price.innerHTML = clearSent('- ' + splitted_bot_res[i] + '£ ' + splitted_bot_res[i+1])
+                            p_for_price.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_price)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(splitted_bot_res[i] + splitted_bot_res[i+1] + '£')
+                        }
+                        else if (splitted_bot_res[i] == 'Link:' && j == 7 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
+                            const a_for_link = document.createElement('a')
+                            a_for_link.classList.add('am')
+                            a_for_link.textContent = "- GO TO TICKET -->";
+                            a_for_link.style.color = "orange"
+                            a_for_link.href = splitted_bot_res[i+1];
+                            Newdiv.appendChild(a_for_link)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                        }
+                        else if (splitted_bot_res[i] == 'Return' && j == 8 && only_for_once_control[j]==0){
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = 'Would you like find return fares as well ?'
+                            p_for_return_sta.style.color = "white"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver('Would you like find return fares as well ?')
+                        }
+                        else if (splitted_bot_res[i] == 'DepartingCurrentTime:' && j == 9 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: '
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = clearSent('The departure time from the previous station is :' + splitted_bot_res[i+1])
+                            p_for_return_sta.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(p_for_return_sta.innerHTML)
+                        }
+                        else if (splitted_bot_res[i] == 'DepartingOriginTime:' && j == 10 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: '
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = clearSent('The departure time from the origin station is :' + splitted_bot_res[i+1])
+                            p_for_return_sta.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(p_for_return_sta.innerHTML )
+                        }
+                        else if (splitted_bot_res[i] == 'DelayStation:' && j == 11 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: '
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = clearSent('The recent or current station:' + splitted_bot_res[i+1])
+                            p_for_return_sta.style.color = "chartreuse"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(p_for_return_sta.innerHTML)
+                        }
+                        else if (splitted_bot_res[i] == 'DelayPrediction:' && j == 12 && only_for_once_control[j]==0){
+                            extracted.innerHTML = 'EXTRACTED INFORMATION: '
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = clearSent('Predicted arriving time to London Liverpool Street station is : ' + splitted_bot_res[i+1])
+                            p_for_return_sta.style.color = "orange"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            a[j] = 1
+                            console.log(a[j])
+                            localStorage.setItem('only_for_once', JSON.stringify(a));
+                            console.log(localStorage.getItem('only_for_once'))
+                            only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(p_for_return_sta.innerHTML)
+                        }
+                        else if ((splitted_bot_res[i] == 'OnGoing' && j == 13 && only_for_once_control[j]==0)){
+                            const p_for_return_sta = document.createElement('p')
+                            p_for_return_sta.classList.add('am')
+                            p_for_return_sta.innerHTML = clearSent(splitted_bot_res[i+1])
+                            p_for_return_sta.style.color = "red"
+                            Newdiv.appendChild(p_for_return_sta)
+                            let a=JSON.parse(localStorage.getItem('only_for_once'));
+                            //a[j] = 1
+                            //console.log(a[j])
+                            console.log(splitted_bot_res[i+1].split(' '))
+                            if(!(splitted_bot_res[i+1].split(' ')).includes('on-going')){
+                                localStorage.setItem('only_for_once', JSON.stringify([0,0,0,0,0,0,0,0,0,0,0,0,0,0]));
+                                console.log(localStorage.getItem('only_for_once'))
+                            }
+                            //only_for_once_control[j] = 1
+                            only_for_once_normal = 1
+                            voiceOver(p_for_return_sta.innerHTML)
+                        }
+                        
+
+                    }
+                }
+                function countOccurrences(arr, target) {
+                
+                    let count = arr.reduce((total, current) => {
+                        return total + (current === target ? 1 : 0);
+                    }, 0);
+
+                    return count;
+                }
+                console.log(localStorage.getItem('only_for_once'))
+                if(only_for_once_normal !=1){
+                    const p_for_div = document.createElement('p')
+                    if(splitted_bot_res.includes(' DELAY ')){
+                       
+                    }
+                    else if(splitted_bot_res.includes('TrainBook')){
+                        if(splitted_bot_res[splitted_bot_res.indexOf('TrainBook')+1]=='Please peform the one-way search first in order to get return fares. "'){
+                            p_for_div.innerHTML =  'Please peform the one-way search first in order to get return fares.';
+                            Newdiv.appendChild(p_for_div)
+                            voiceOver(p_for_div.innerHTML)
+                        }
+                    }
+                    else if(!splitted_bot_res.includes('TrainBook') && !splitted_bot_res.includes('Contingency')){
+
+                        p_for_div.innerHTML =  clearSent(JSON.parse((bot_res)));
+                        Newdiv.appendChild(p_for_div)
+                        console.log(splitted_bot_res)
+                    }
+                    var Return_reject_cont = 0
+                    if(splitted_bot_res.includes('RetunReject')){
+                        console.log(splitted_bot_res.indexOf('RetunReject')+1)
+                        p_for_div.innerHTML =  splitted_bot_res[splitted_bot_res.indexOf('RetunReject')+1];
+                        Newdiv.appendChild(p_for_div)
+                        let a=JSON.parse(localStorage.getItem('only_for_once'));
+                        a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        console.log('reset all' + a)
+                        localStorage.setItem('only_for_once', JSON.stringify(a));
+                        Return_reject_cont = 1
+                        voiceOver(p_for_div.innerHTML)
+                    }
+                   
+                    const p_for_head_warning = document.createElement('p')
+                    const p_for_desc_warning = document.createElement('p')
+
+                    if (countOccurrences(only_for_once_control, 0)>7 && splitted_bot_res.includes('TrainBook') && Return_reject_cont==0 ){
+                        p_for_head_warning.classList.add('am')
+                        p_for_desc_warning.classList.add('am')
+                        p_for_desc_warning.innerHTML = 'To proceed with your ticket, please provide the missing information.'
+                        p_for_head_warning.innerHTML = 'WARNINGS:'
+                        p_for_head_warning.style.color = 'red'
+                        Newdiv.appendChild(p_for_desc_warning)
+                        Newdiv.appendChild(p_for_head_warning)
+                        voiceOver(p_for_desc_warning.innerHTML )
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[0]==0){
+                            const p_for_Departure_warning = document.createElement('p')
+                            p_for_Departure_warning.classList.add('am')
+                            p_for_Departure_warning.innerHTML = '- Departing station is missing. Please provide the departing station.'
+                            p_for_Departure_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_Departure_warning)
+                            voiceOver(' Departing station is missing. Please provide the departing station.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[1]==0){
+                            const p_for_Arr_warning = document.createElement('p')
+                            p_for_Arr_warning.classList.add('am')
+                            p_for_Arr_warning.innerHTML = '- Arriving station is missing. Please provide the Arriving station.'
+                            p_for_Arr_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_Arr_warning)
+                            voiceOver('Arriving station is missing. Please provide the Arriving station.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[3]==0){
+                            const p_for_time_warning = document.createElement('p')
+                            p_for_time_warning.classList.add('am')
+                            p_for_time_warning.innerHTML = '- Time is missing or not in the suitiable format (ex:12:30 am/pm). Please provide the time information.'
+                            p_for_time_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_time_warning)
+                            voiceOver('Time is missing. Please provide the time information.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[4]==0){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- Date is missing. Please provide the date information.'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver('Date is missing. Please provide the date information.')
+                        }
+
+                    }
+                    else if (countOccurrences(only_for_once_control, 0)>=9 && splitted_bot_res.includes(' DELAY ')){
+                        p_for_head_warning.classList.add('am')
+                        p_for_desc_warning.classList.add('am')
+                        p_for_desc_warning.innerHTML = 'To proceed with delay estimation, please provide the missing information:'
+                        // p_for_head_warning.innerHTML = 'WARNINGS:'
+                        p_for_head_warning.style.color = 'red'
+                        Newdiv.appendChild(p_for_desc_warning)
+                        Newdiv.appendChild(p_for_head_warning)
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[11]==0){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The location of the previous station (or current) is missing'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver( 'The location of the previous station, or current is missing.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[9]==0){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The departure time of previous station (or current) is missing'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver('The departure time of previous station (or current) is missing')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[10]==0){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The departure time from the first station is missing'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver('The departure time from the previous station is missing')
+                        }
+
+                    }
+                    
+
+                }
+                else if(countOccurrences(only_for_once_control, 0)>7){
+                    if (splitted_bot_res.includes('TrainBook')){
+                        const p_for_head_warning = document.createElement('p')
+                        p_for_head_warning.classList.add('am')
+                        p_for_head_warning.innerHTML = 'WARNINGS:'
+                        p_for_head_warning.style.color = 'red'
+                        Newdiv.appendChild(p_for_head_warning)
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[0]==0){
+                            const p_for_Departure_warning = document.createElement('p')
+                            p_for_Departure_warning.classList.add('am')
+                            p_for_Departure_warning.innerHTML = '- Departing station is missing. Please provide the departing station.'
+                            p_for_Departure_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_Departure_warning)
+                            voiceOver(' Departing station is missing. Please provide the departing station.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[1]==0){
+                            const p_for_Arr_warning = document.createElement('p')
+                            p_for_Arr_warning.classList.add('am')
+                            p_for_Arr_warning.innerHTML = '- Arriving station is missing. Please provide the Arriving station.'
+                            p_for_Arr_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_Arr_warning)
+                            voiceOver('Arriving station is missing. Please provide the Arriving station.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[3]==0){
+                            const p_for_time_warning = document.createElement('p')
+                            p_for_time_warning.classList.add('am')
+                            p_for_time_warning.innerHTML = '- Time is missing. Please provide the time information.'
+                            p_for_time_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_time_warning)
+                            voiceOver('Time is missing. Please provide the time information.')
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[4]==0){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- Date is missing. Please provide the date information.'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver('Date is missing. Please provide the date information.')
+                        }
+                    }
+                    
+
+                    else if (splitted_bot_res.includes(' DELAY ')){
+                        const p_for_head_warning = document.createElement('p')
+                        const p_for_desc_warning = document.createElement('p')
+                        if(countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1)<4 && !splitted_bot_res.includes('OnGoing')){
+                            console.log(" I am İnnnnnnnn" + countOccurrences(JSON.parse(localStorage.getItem('only_for_once')),1))
+                            p_for_head_warning.classList.add('am')
+                            p_for_desc_warning.classList.add('am')
+                            p_for_desc_warning.innerHTML = 'To proceed with delay estimation, please provide the missing information.'
+                            p_for_head_warning.innerHTML = 'WARNINGS:'
+                            p_for_head_warning.style.color = 'red'
+                            voiceOver(p_for_desc_warning.innerHTM)
+                            Newdiv.appendChild(p_for_desc_warning)
+                            Newdiv.appendChild(p_for_head_warning)
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[9]==0 && !splitted_bot_res.includes('OnGoing')){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The departure time of previous station (or current) is missing'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver(p_for_date_warning.innerHTML)
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[10]==0 && !splitted_bot_res.includes('OnGoing')){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The departure time from the origin station is missing'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver(p_for_date_warning.innerHTML)
+                        }
+                        if (JSON.parse(localStorage.getItem('only_for_once'))[11]==0 && !splitted_bot_res.includes('OnGoing')){
+                            const p_for_date_warning = document.createElement('p')
+                            p_for_date_warning.classList.add('am')
+                            p_for_date_warning.innerHTML = '- The origin station of the journey is missing.'
+                            p_for_date_warning.style.color = 'red'
+                            Newdiv.appendChild(p_for_date_warning)
+                            voiceOver(p_for_date_warning.innerHTML)
+                        }
+
+                    }
+                }
+                if(countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == JSON.parse(localStorage.getItem('only_for_once')).length || countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == JSON.parse(localStorage.getItem('only_for_once')).length-7 || countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == JSON.parse(localStorage.getItem('only_for_once')).length-6 || countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == JSON.parse(localStorage.getItem('only_for_once')).length-5 || countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == 5 || countOccurrences(JSON.parse(localStorage.getItem('only_for_once')), 1) == 4){
+                    console.log('I am in')
+                    console.log((localStorage.getItem('only_for_once')))
+                    checkReturnCounter()
+                    if (splitted_bot_res.includes('Return') && splitted_bot_res.includes('TrainBook')){
+                        let a=JSON.parse(localStorage.getItem('only_for_once'));
+                        a=[1,1,1,0,0,1,1,1,0,0,0,0,0]
+                        console.log('reset for return' + a)
+                        localStorage.setItem('only_for_once', JSON.stringify(a));
+                    }
+                    else if (splitted_bot_res.includes('TrainBook') && JSON.parse(localStorage.getItem('only_for_once')) == '1,1,1,1,1,1,1,1,0,0,0,0,0'){
+                        let a=JSON.parse(localStorage.getItem('only_for_once'));
+                        a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        console.log('reset all' + a)
+                        localStorage.setItem('only_for_once', JSON.stringify(a));
+                    }
+                    else if ((localStorage.getItem('only_for_once')) == '[0,0,0,0,0,0,0,0,0,1,1,1,1,1]'){
+                        let a=JSON.parse(localStorage.getItem('only_for_once'));
+                        a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        console.log('reset all' + a)
+                        localStorage.setItem('only_for_once', JSON.stringify(a));
+                    }
+                    else if ((localStorage.getItem('only_for_once')) == '[0,0,0,0,0,0,0,0,0,1,1,1,1,0]'){
+                        let a=JSON.parse(localStorage.getItem('only_for_once'));
+                        a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                        console.log('reset all' + a)
+                        localStorage.setItem('only_for_once', JSON.stringify(a));
+                    }
+                }
+
+                Newdiv.classList.add('bot_response')
+                DivForLogo.classList.add('LogoDivBot')
+                logo_img.classList.add('logoImg')
+                p_for_div.classList.add('am')
+            
+                
+                endLoading()
+
+                setTimeout(function () {Newdiv.style.opacity = '1'}, 300); //for animations
+                setTimeout(function () {DivForLogo.style.opacity = '1'}, 300);
+                scrollToBottom();
+                document.getElementById('input1').value = '';
+            }
+        };
+        xhr.send(new URLSearchParams(formData));
+});
+
+function scrollToBottom() {// auto scroll
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+    });
+}
+
+const scrollBut=document.getElementById('scroll')
+window.addEventListener('scroll',function(){
+    var documentHeight = document.documentElement.scrollHeight;
+    var windowHeight = window.innerHeight;
+    var scrollDistance = window.scrollY;
+
+    if (windowHeight + scrollDistance >= documentHeight) {
+        scrollBut.style.opacity='0'
+    }else{
+        scrollBut.style.opacity='1'
+    }
+});
+
+
+
+function SongPost(song,artist,operation) {
+    var a = {
+        song_name :song,
+        artist : artist,
+        op:operation
+    }
+    fetch('/musicSearch', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(a)
+    })
+    .then(response => {
+        if (response.status === 404) {
+            throw new Error('song not found.');
+            voiceOver('this song doesn\'t exist sir')
+        } else if (response.status === 500) {
+            throw new Error('spotify is not present.');
+            voiceOver('spotify is not present sir')
+        }
+        return response.json();
+    })
+    .catch(error => {
+        if (error.message === 'song not found.') {
+            
+            voiceOver('this sond is not present on spotify sir.');
+        } else if (error.message === 'spotify is not present.') {
+           
+            voiceOver('spotify is not present sir.');
+        }
+        
+    });
+};
+
+function adjustVolume(operation){
+    var b = {
+        op:operation
+    }
+    fetch('/volumeAdjust', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(b)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('An error occured during the POST:', error);
+    });
+
+}
+function Loader(){
+    fetch('/currentJourney')
+    .then(response => {
+        if (response.ok) {
+        return response.json(); 
+        } 
+    })
+    .then(data => {
+        console.log(data[1][0]); 
+        console.log(data[0]); 
+          if(!data[1][0].includes('') && data[0] == '0'){
+            var popup_csv = document.getElementsByClassName('csv')[0];
+            popup_csv.style.display = 'block';
+            popup_csv.style.opacity = '0'
+            setTimeout(function () {popup_csv.style.opacity = '1'}, 300); 
+            toggleBlur();
+            const processPopUp = document.getElementById('waiting')
+            processPopUp.style.opacity = '0'
+            dinamicLoaderContent(0)
+            
+          }
+    })
+    .catch(error => {
+        console.error('current journey error:', error);
+    });
+}
+
+function checkReturnCounter(){
+    
+    fetch('/returnCounter')
+    .then(response => {
+        if (response.ok) {
+        return response.json(); 
+        } 
+    })
+    .then(data => {
+        console.log(data); 
+        console.log(typeof(data)); 
+        if (data==1){
+            let a=JSON.parse(localStorage.getItem('only_for_once'));
+            a=[1,1,1,0,0,1,1,1,0,0,0,0,0]
+            console.log('reset for return' + a)
+            localStorage.setItem('only_for_once', JSON.stringify(a));
+        }
+    })
+    .catch(error => {
+        console.error('current journey error:', error);
+    });
+}
+
+function part3outputParse(botRes,Newdiv){
+    fetch('/contingencies')
+    .then(response => {
+        if (response.ok) {
+        return response.json(); 
+        } 
+    })
+    .then(data => {
+        var counter = 0
+        var map = [0,0,0]
+        console.log(data); 
+        console.log(typeof(data));
+
+        if (botRes.split('CMP_7028B').includes('Contingency')){
+            if(data[0]){
+                if (data[0][2] && data[0][2]!=''){
+                   console.log(data[0][2])
+                   const severity = document.createElement('p')
+                   severity.classList.add('am')
+                   severity.innerHTML = clearSent('Severity: ' + data[0][2])
+                   severity.style.color='chartreuse'
+                   Newdiv.appendChild(severity)
+                   counter+=1
+                   map[0]=1
+                   voiceOver(severity.innerHTML)
+                }
+                if (data[0][1] && data[0][1]!=''){
+                   console.log(data[0][1])
+                   const station2 = document.createElement('p')
+                   station2.classList.add('am')
+                   station2.innerHTML = clearSent('Station2: ' + data[0][1])
+                   Newdiv.appendChild(station2)
+                   station2.style.color='chartreuse'
+                   counter+=1
+                   map[1]=1
+                   voiceOver(station2.innerHTML)
+                }
+                if (data[0][0] && data[0][0]!=''){
+                    console.log(data[0][0])
+                   const station1 = document.createElement('p')
+                   station1.classList.add('am')
+                   station1.innerHTML = clearSent('Station1: ' + data[0][0])
+                   Newdiv.appendChild(station1)
+                   station1.style.color='chartreuse'
+                   counter+=1
+                   map[2]=1
+                   voiceOver(station1.innerHTML)
+                }
+                if (!map.includes(0)){
+                   const ActionHead = document.createElement('p')
+                   const actionPlan = document.createElement('p')
+                   ActionHead.classList.add('am')
+                   actionPlan.classList.add('am')
+                   ActionHead.innerHTML = 'Action Plan:'
+                   actionPlan.innerHTML =  clearSent(botRes.split('CMP_7028B')[botRes.split('CMP_7028B').indexOf('actionPlan') + 1])
+                   ActionHead.style.color='red'
+                   actionPlan.style.color='white'
+                   Newdiv.appendChild(ActionHead)
+                   Newdiv.appendChild(actionPlan)
+                   voiceOver('Action Plan:')
+                   voiceOver(actionPlan.innerHTML)
+                }
+
+            }
+            if(map.includes(0)){
+                const p_for_head_warning = document.createElement('p')
+                const p_for_desc_warning = document.createElement('p')
+                p_for_head_warning.classList.add('am')
+                p_for_desc_warning.classList.add('am')
+                p_for_desc_warning.innerHTML = 'To proceed with contingency plan, please provide the missing information.'
+                p_for_head_warning.innerHTML = 'WARNINGS:'
+                p_for_head_warning.style.color = 'red'
+                voiceOver(p_for_desc_warning.innerHTML )
+                Newdiv.appendChild(p_for_desc_warning)
+                Newdiv.appendChild(p_for_head_warning)
+                console.log(map)
+                if (map[0]==0){
+                    const warning = document.createElement('p')
+                    warning.classList.add('am')
+                    warning.innerHTML = '- The severity of the blockage is missing.'
+                    warning.style.color = 'red'
+                    Newdiv.appendChild(warning)
+                    voiceOver(warning.innerHTML )
+                }
+                if (map[1]==0){
+                    const warning = document.createElement('p')
+                    warning.classList.add('am')
+                    warning.innerHTML = '- The Station2 of the blockage is missing.'
+                    warning.style.color = 'red'
+                    Newdiv.appendChild(warning)
+                    voiceOver(warning.innerHTML)
+                }
+                if (map[2]==0){
+                    const warning = document.createElement('p')
+                    warning.classList.add('am')
+                    warning.innerHTML = '- The Station1 of the blockage is missing.'
+                    warning.style.color = 'red'
+                    Newdiv.appendChild(warning)
+                    voiceOver(warning.innerHTML)
+                }
+            }
+        }
+
+        if(counter==3){
+            fetch('/resetContingency')
+            .then(response => {
+                if (response.ok) {
+                return response.json(); 
+                } 
+            })
+            .then(data => {
+                console.log(data); 
+            })
+            .catch(error => {
+                console.error('contingency reset error:', error);
+            });
+        }
+
+    })
+    .catch(error => {
+        console.error('Contingency error:', error);
+    });
+}
+function dinamicLoaderContent(currentIndex){
+    const messages = ["Scrapers are running...", "Searching the universe...", "Comparing the fares...", "We are almost there...", "We found the cheapest ticket for you !"];
+    const waiting_p_csv_message = document.getElementById('waiting_p_csv_message')
+    waiting_p_csv_message.innerHTML =  messages[currentIndex];
+    if(currentIndex == messages.length-1){
+        currentIndex = 0
+        return
+    }else{
+        currentIndex = (currentIndex + 1)
+        setTimeout(function(){dinamicLoaderContent(currentIndex)}, 5000); 
+    }
+
+}
+
+function endLoading(){
+    var popup_csv = document.getElementsByClassName('csv')[0];
+    document.getElementById('contentContainer').classList.remove('blur'); 
+    document.getElementById('form1').classList.remove('blur');
+    document.getElementById('welcome').classList.remove('blur');
+    //button.style.display = 'none'; 
+    popup_csv.style.opacity ='0'
+    //const processPopUp = document.getElementById('waiting')
+    //processPopUp.style.opacity = '0'
+    const subbutton = document.getElementById('submitBut1');
+    subbutton.innerHTML = ''
+    const storedElements = JSON.parse(localStorage.getItem('elements'));
+    if (storedElements) {
+        subbutton.insertAdjacentHTML('beforeend', storedElements[0]);
+        subbutton.insertAdjacentHTML('beforeend', storedElements[1]);
+    }
+}
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    console.log("Geolocation is not supported by this browser.");
+  }
+  
+}
+
+function showPosition(position) {
+  console.log("Latitude: " + position.coords.latitude + 
+  "\nLongitude: " + position.coords.longitude);
+  
+  const vel = calculateSpeed(position.coords.latitude, position.coords.longitude);
+
+  var b = {
+        vel: vel,
+        latitute: position.coords.latitude,
+        longitude: position.coords.longitude
+    }
+    fetch('/trv', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(b)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP error, status = ' + response.status);
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('An error occured during the POST:', error);
+    });
+
+}
+
+function calculateSpeed(latitude, longitude) {
+  var currentDateTime = new Date();
+  var resultInSeconds = currentDateTime.getTime() / 1000;
+  if (typeof previousLatitude !== 'undefined' && typeof previousLongitude !== 'undefined') {// won't calculte the vel for the first time
+    
+    var distanceMeters = getDistance(previousLatitude, previousLongitude, latitude, longitude);
+    var timeDifferenceSeconds = resultInSeconds - previousTimestamp;
+    var currentSpeed = distanceMeters / timeDifferenceSeconds;
+    console.log("Current speed: " + currentSpeed + " m/s");
+  }
+  
+  previousLatitude = latitude;
+  previousLongitude = longitude;
+  previousTimestamp = resultInSeconds;
+  return currentSpeed
+}
+
+function getDistance(lat1, lon1, lat2, lon2) {
+  //degre to m conversion
+  var R = 6371000; //radius of the World
+  var φ1 = lat1 * Math.PI / 180; 
+  var φ2 = lat2 * Math.PI / 180; 
+  var Δφ = (lat2-lat1) * Math.PI / 180; 
+  var Δλ = (lon2-lon1) * Math.PI / 180; 
+
+  var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  var distance = R * c; //distance(m)
+  return distance;
+}
+
+var previousLatitude;
+var previousLongitude;
+var previousTimestamp;
+
+//setInterval(getLocation, 6000); 
+
+
+      </script>
+</body>

@@ -1,0 +1,125 @@
+{
+    "greeting": {
+        "patterns": [
+            "hi",
+            "hello",
+            "hey",
+            "holla",
+            "hola",
+            "Hello!",
+            "good day",
+            "howdy",
+            "g'day",
+            "salutations",
+            "greetings"
+        ],
+        "responses": [
+            "Thanks for checking in. How can I help you today ?",
+            "Thank you for being there! How can I be at your service today ?",
+            "Hello! What can I assist you with today?",
+            "Good to see you! How may I help you?",
+            "Hi there! What can I do for you today?",
+            "Greetings! How can I be of service to you today?"
+        ]
+    },
+    "goodbye": {
+        "patterns": [
+            "bye",
+            "goodbye",
+            "cya",
+            "see you",
+            "farewell",
+            "catch you later"
+        ],
+        "responses": [
+            "Have a nice time, bye.",
+            "Thank you for using this service. Goodbye",
+            "See you soon!",
+            "Take care, see you next time!",
+            "Farewell! Have a great day.",
+            "Catch you later! Goodbye."
+        ]
+    },
+    "thanks": {
+        "patterns": [
+            "thanks",
+            "thank",
+            "thank you"
+        ],
+        "responses": [
+            "Happy to help!",
+            "Any time!",
+            "You're welcome",
+            "My pleasure"
+        ]
+    },
+    "return" : {
+        "patterns" :[
+            "return",
+            "round"
+        ],
+        "responses" : [
+            "Finding returning fares for you. "
+        ]
+    },
+    "contingency" : {
+        "patterns" :[
+            "blockage",
+            "contingency",
+            "severity"
+        ],
+        "responses" : [
+            "Going to find contingency plans"
+        ]
+    },
+    "time" : {
+        "patterns" :[
+            "time",
+            "pm"
+        ],
+        "responses" : ["Extracting time. "]
+    },
+    "date" : {
+        "patterns" :[
+            "date",
+            "dates"
+        ],
+        "responses" : ["Extracting date. "]
+    },
+    "apologies" : {
+        "patterns" :[
+            "sorry",
+            "apologies"
+        ],
+        "responses" : [
+            "That's okay, let's keep trying!",
+            "No need to apologies, im sure we can figure this out."
+        ]
+    },
+    "help" : {
+        "patterns" :[
+            "help",
+            "assistance",
+            "assist",
+            "aid",
+            "support",
+            "help me"
+        ],
+        "responses" : [
+            "Yes sure, please tell me how can I help you today ?",
+            "Of course, please tell me how can I assist you today ?",
+            "Jarvis is always at your service.",
+            "Absolutely, how may I assist you further?",
+            "Sure thing, what do you need help with?",
+            "I'm here to help, what can I do for you?"
+        ]
+    },
+    "default": [
+        "I'm sorry, I didn't understand that.",
+        "I'm not sure I understand.",
+        "Could you please rephrase that?",
+        "I'm having trouble understanding. Could you clarify?",
+        "I didn't catch that. Could you repeat or rephrase, please?",
+        "My apologies, but I'm unable to understand your request."
+    ]
+}

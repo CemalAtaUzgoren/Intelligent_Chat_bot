@@ -1,0 +1,87 @@
+train | train ticket.
+train | I get a train from to ?
+train | I would like to book a train from to.
+train | Are there any train tickets from to?
+train | I would like to purchase a ticket to depart from and arrive at.
+train | Please could you fetch me the current train times and prices from to?
+train | get me a ticket from to?
+train | trains from to.
+train | collect me a ticket from to.
+train | want ticket from to.
+train | want to find a train ticket
+train | book train.
+train | book me a ticket.
+train | book a train ticket.
+location | my destination station is.
+location | my destination city is.
+location | my departing station is.
+location | my departing city is.
+location | arrival station.
+location | arrival city.
+location | departing location.
+location | departure is.
+location | departure city.
+location | arriving location.
+location | departing spot.
+location | arriving spot.
+location | departing train stop.
+location | arriving train stop.
+location | the arriving city is.
+location | the arriving station is.
+time | the time to book the ticket.
+time | train booking time is.
+time | the time to book is.
+time | the train booking hour is.
+time | booking train minute is.
+time | the time will be.
+time | time is.
+time | the time is.
+time | the time is going to be.
+time | the time gonna be.
+date | the date to book the ticket.
+date | I have train booking for a date.
+date | find the cheapest ticket for the date.
+date | the booking date is.
+date | train booking date is.
+date | the date is.
+date | date is.
+date | date will be.
+date | the date will be.
+reset | reset. 
+reset | reset the search.
+reset | stop searching.
+reset | stop searching.
+reset | reset my search.
+reset | how about reseting the search.
+reset | request you to reset.
+reset | reset the current search.
+reset | reset my current search.
+reset | reset search.
+reset | refresh my search.
+reset | refresh my current search.
+return | I want return.
+return | I would like to have return.
+return | return as well.
+return | show me prices for return.
+return | I do not want return.
+return | I would not like to have return.
+return | do not show return.
+return | would like a return ticket on.
+return | want to have a return ticket on.
+return | would like return ticket at.
+return | want to have a return at.
+return | i would like a return ticket on.
+return | return on.
+delay | tell me delay
+delay | want to know about delay
+delay | possible delay
+delay | predict delay
+contigency | there is a contigency
+contigency | contigency plan for
+contigency | can I have contigency plan
+contigency | there is a blockage
+contigency | partial blockage between
+contigency | full blockage between
+contigency | there is a partial blockage between
+contigency | there is a full blockage between
+contigency | can you tell me the contigency plan
