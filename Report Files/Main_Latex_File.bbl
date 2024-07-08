@@ -1,5 +1,8 @@
 \begin{thebibliography}{xx}
 
+\harvarditem[Abdin et~al.]{Abdin, Jacobs, Awan, Aneja, Awadallah, Awadalla, Bach, Bahree, Bakhtiari, Behl et~al.}{2024}{abdin2024phi}
+Abdin, M., Jacobs, S.~A., Awan, A.~A., Aneja, J., Awadallah, A., Awadalla, H., Bach, N., Bahree, A., Bakhtiari, A., Behl, H. et~al.  \harvardyearleft 2024\harvardyearright , `Phi-3 technical report: A highly capable language model locally on your phone', {\em arXiv preprint arXiv:2404.14219} .
+
 \harvarditem{Bird \harvardand\ Klein}{2009}{NLTK}
 Bird, Steven, E.~L. \harvardand\ Klein, E.  \harvardyearleft 2009\harvardyearright , {\em Natural Language Processing with Python}.
 

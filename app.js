@@ -180,44 +180,71 @@ app.get('/resetContingency',async (req,res)=>{
     
 });
 
-app.post('/ChatBot',async (req,res)=>{
+app.post('/ChatBot', (req,res)=>{
     const user_input=req.body.userInput;
     var split_User_input = user_input.split(' ')
-    // Auto spelling check and typo fix.
-    for(let i =0 ;i<split_User_input.length ;i++){
-        SpellChecker.getDictionary("en-US", function(err, dictionary) {
-            if(!err) {
-                var misspelled = ! dictionary.spellCheck(split_User_input[i]);
-                if(misspelled) {
-                    var suggestions = dictionary.getSuggestions(split_User_input[i]);
-                    console.log("suggestions: ",suggestions)
-                    if(suggestions.length>0){
-                        split_User_input[i] = suggestions[0]
-                        console.log("Updatedted Splitted User İnput ",split_User_input)
+
+    //Reading intention.json
+    var JSONPatterns = []
+    fs.readFile("./intentions.json",(err,data)=>{
+        if (err) throw err;
+        // Converting to JSON 
+        const users = JSON.parse(data); 
+        const JsonKeys = Object.keys(users)
+        
+        for (k = 0;k<JsonKeys.length-1;k++){
+            //console.log(users[JsonKeys[k]].patterns);
+            JSONPatterns.push((users[JsonKeys[k]].patterns))
+        }
+        JSONPatterns=[...new Set ((JSONPatterns.flat(Infinity).map(str => str.split(' ')).flat(Infinity)))]
+    
+
+        // reading sentences.txt
+        const fileContents = fs.readFileSync('./sentences.txt', 'utf8');
+        const words = [...new Set (fileContents.split(/\s+/))];// only unique values
+
+
+        const FinalChekListTypo = words.concat(JSONPatterns)
+        console.log(FinalChekListTypo);
+        // Auto spelling check and typo fix.
+        for(let i =0 ;i<split_User_input.length ;i++){
+            SpellChecker.getDictionary("en-US", function(err, dictionary) {
+                if(!err) {
+                    var misspelled = ! dictionary.spellCheck(split_User_input[i]);
+                    if(misspelled) {
+                        var suggestions = dictionary.getSuggestions(split_User_input[i]);
+                        console.log("suggestions: ",suggestions)
+                        if(suggestions.length>0){
+                            for (let j = 0 ; j<suggestions.length ; j++){
+                                if(FinalChekListTypo.includes(suggestions[j])){
+                                    split_User_input[i] = suggestions[j]
+                                    console.log("Updatedted Splitted User İnput ",split_User_input)
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }); 
-    }
+            }); 
+        }
+    
+        setTimeout(function(){
+            const reunion=split_User_input.join(' ')
+            console.log(reunion)
+            const python = spawn('python', ['chatbot_conversation.py', JSON.stringify(reunion)]);// sending the request (user input) to the python file to generate responses based on that.
+            python.stdout.on('data', (data) => {// fetching outputs of print statements tothe node terminal.
+                console.log(`***Python script's print outputs:***\n ${data}`);
+            });   
+            python.on('error', (err) => {//error detection in the python code.
+                console.error('Python  error:', err);
+            }); 
 
-    setTimeout(function(){
-        const reunion=split_User_input.join(' ')
-        
-        const python = spawn('python', ['chatbot_conversation.py', JSON.stringify(user_input)]);// sending the request (user input) to the python file to generate responses based on that.
-        python.stdout.on('data', (data) => {// fetching outputs of print statements tothe node terminal.
-            console.log(`***Python script's print outputs:***\n ${data}`);
-        });   
-        python.on('error', (err) => {//error detection in the python code.
-            console.error('Python  error:', err);
-        }); 
-
-        python.on('close', (code) => {// fetching the results from python code
-            const result = fs.readFileSync('output.txt', 'utf-8');
-            console.log(result)
-            res.send({message: result.toString('utf-8')});
-        });
-    },1000)    
-
+            python.on('close', (code) => {// fetching the results from python code
+                const result = fs.readFileSync('output.txt', 'utf-8');
+                console.log(result)
+                res.send({message: result.toString('utf-8')});
+            });
+        },1000)
+    })  
 });
 
 app.get('/currentJourney', async (req, res) => {

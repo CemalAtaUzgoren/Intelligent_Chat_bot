@@ -1,31 +1,32 @@
 
 Running tests... 
 ----------------------------------------------------------------------
- test_convert_date_type (__main__.TestChatbotConversation.test_convert_date_type) ... OK (1.200799)s
- test_convert_date_value (__main__.TestChatbotConversation.test_convert_date_value) ... OK (1.300064)s
- test_extract_location_multiple_matches (__main__.TestChatbotConversation.test_extract_location_multiple_matches) ... OK (1.358489)s
- test_extract_location_single (__main__.TestChatbotConversation.test_extract_location_single) ... OK (1.369781)s
- test_extraction_delay_time_invalid_time_format (__main__.TestChatbotConversation.test_extraction_delay_time_invalid_time_format) ... OK (1.463548)s
- test_extraction_delay_time_no_time_found (__main__.TestChatbotConversation.test_extraction_delay_time_no_time_found) ... OK (1.208534)s
- test_extraction_delay_time_single_time1 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time1) ... OK (1.205086)s
- test_extraction_delay_time_single_time2 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time2) ... OK (1.376705)s
- test_extraction_delay_time_single_time3 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time3) ... OK (1.181941)s
- test_lemmatise_1 (__main__.TestChatbotConversation.test_lemmatise_1) ... OK (1.325526)s
- test_lemmatise_2 (__main__.TestChatbotConversation.test_lemmatise_2) ... OK (1.207478)s
- test_lemmatise_3 (__main__.TestChatbotConversation.test_lemmatise_3) ... OK (1.193739)s
- test_lemmatise_4 (__main__.TestChatbotConversation.test_lemmatise_4) ... FAIL (1.383878)s
- test_predictions (__main__.TestChatbotConversation.test_predictions) ... FAIL (1.186406)s
- test_LNER_scraper (__main__.TestScrapers.test_LNER_scraper) ... OK (1.230885)s
- test_greateranglia_scraper (__main__.TestScrapers.test_greateranglia_scraper) ... OK (1.183495)s
- test_myTrainTicket_scraper (__main__.TestScrapers.test_myTrainTicket_scraper) ... FAIL (1.253192)s
- test_nationalrail_scraper (__main__.TestScrapers.test_nationalrail_scraper) ... OK (2.301728)s
- test_southernRailways_scraper (__main__.TestScrapers.test_southernRailways_scraper) ... OK (1.198766)s
- test_trainpal_scraper (__main__.TestScrapers.test_trainpal_scraper) ... FAIL (1.934237)s
- test_traintickets_scraper (__main__.TestScrapers.test_traintickets_scraper) ... FAIL (1.558838)s
- test_contingencyPlans (__main__.TestContingencies.test_contingencyPlans) ... OK (2.025566)s
+ test_convert_date_type (__main__.TestChatbotConversation.test_convert_date_type) ... OK (1.241154)s
+ test_convert_date_value (__main__.TestChatbotConversation.test_convert_date_value) ... OK (1.460890)s
+ test_extract_location_multiple_matches (__main__.TestChatbotConversation.test_extract_location_multiple_matches) ... OK (1.256621)s
+ test_extract_location_single (__main__.TestChatbotConversation.test_extract_location_single) ... OK (1.299432)s
+ test_extraction_delay_time_invalid_time_format (__main__.TestChatbotConversation.test_extraction_delay_time_invalid_time_format) ... OK (1.453708)s
+ test_extraction_delay_time_no_time_found (__main__.TestChatbotConversation.test_extraction_delay_time_no_time_found) ... OK (1.173429)s
+ test_extraction_delay_time_single_time1 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time1) ... OK (1.188243)s
+ test_extraction_delay_time_single_time2 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time2) ... OK (1.407832)s
+ test_extraction_delay_time_single_time3 (__main__.TestChatbotConversation.test_extraction_delay_time_single_time3) ... OK (1.194226)s
+ test_lemmatise_1 (__main__.TestChatbotConversation.test_lemmatise_1) ... OK (1.322093)s
+ test_lemmatise_2 (__main__.TestChatbotConversation.test_lemmatise_2) ... OK (1.199546)s
+ test_lemmatise_3 (__main__.TestChatbotConversation.test_lemmatise_3) ... OK (1.196075)s
+ test_lemmatise_4 (__main__.TestChatbotConversation.test_lemmatise_4) ... FAIL (1.399511)s
+ test_predictions (__main__.TestChatbotConversation.test_predictions) ... OK (1.189501)s
+ test_predictions_2 (__main__.TestChatbotConversation.test_predictions_2) ... OK (1.306510)s
+ test_LNER_scraper (__main__.TestScrapers.test_LNER_scraper) ... OK (1.191690)s
+ test_greateranglia_scraper (__main__.TestScrapers.test_greateranglia_scraper) ... OK (1.434015)s
+ test_myTrainTicket_scraper (__main__.TestScrapers.test_myTrainTicket_scraper) ... FAIL (2.153486)s
+ test_nationalrail_scraper (__main__.TestScrapers.test_nationalrail_scraper) ... OK (1.192494)s
+ test_southernRailways_scraper (__main__.TestScrapers.test_southernRailways_scraper) ... OK (1.757186)s
+ test_trainpal_scraper (__main__.TestScrapers.test_trainpal_scraper) ... FAIL (1.404217)s
+ test_traintickets_scraper (__main__.TestScrapers.test_traintickets_scraper) ... FAIL (1.241816)s
+ test_contingencyPlans (__main__.TestContingencies.test_contingencyPlans) ... OK (2.504841)s
 
 ======================================================================
-FAIL [1.383878s]: __main__.TestChatbotConversation.test_lemmatise_4
+FAIL [1.399511s]: __main__.TestChatbotConversation.test_lemmatise_4
 ----------------------------------------------------------------------
 Traceback (most recent call last):
   File "/Users/ata/Desktop/chatbot/unit_tests.py", line 130, in test_lemmatise_4
@@ -35,20 +36,10 @@ Traceback (most recent call last):
 AssertionError: False is not true : First value and second value are not equal !
 
 ======================================================================
-FAIL [1.186406s]: __main__.TestChatbotConversation.test_predictions
+FAIL [2.153486s]: __main__.TestScrapers.test_myTrainTicket_scraper
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 166, in test_predictions
-    self.assertTrue(isinstance(predictions, str))
-  File "/Users/ata/anaconda3/lib/python3.11/unittest/case.py", line 715, in assertTrue
-    raise self.failureException(msg)
-AssertionError: False is not true
-
-======================================================================
-FAIL [1.253192s]: __main__.TestScrapers.test_myTrainTicket_scraper
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 191, in test_myTrainTicket_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 202, in test_myTrainTicket_scraper
     data = json.load(file)
            ^^^^^^^^^^^^^^^
   File "/Users/ata/anaconda3/lib/python3.11/json/__init__.py", line 293, in load
@@ -67,17 +58,17 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 195, in test_myTrainTicket_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 206, in test_myTrainTicket_scraper
     self.assertTrue(False,'Scraper could not find any ticket.')
   File "/Users/ata/anaconda3/lib/python3.11/unittest/case.py", line 715, in assertTrue
     raise self.failureException(msg)
 AssertionError: False is not true : Scraper could not find any ticket.
 
 ======================================================================
-FAIL [1.934237s]: __main__.TestScrapers.test_trainpal_scraper
+FAIL [1.404217s]: __main__.TestScrapers.test_trainpal_scraper
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 218, in test_trainpal_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 229, in test_trainpal_scraper
     data = json.load(file)
            ^^^^^^^^^^^^^^^
   File "/Users/ata/anaconda3/lib/python3.11/json/__init__.py", line 293, in load
@@ -96,17 +87,17 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 222, in test_trainpal_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 233, in test_trainpal_scraper
     self.assertTrue(False,'Scraper could not find any ticket.')
   File "/Users/ata/anaconda3/lib/python3.11/unittest/case.py", line 715, in assertTrue
     raise self.failureException(msg)
 AssertionError: False is not true : Scraper could not find any ticket.
 
 ======================================================================
-FAIL [1.558838s]: __main__.TestScrapers.test_traintickets_scraper
+FAIL [1.241816s]: __main__.TestScrapers.test_traintickets_scraper
 ----------------------------------------------------------------------
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 227, in test_traintickets_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 238, in test_traintickets_scraper
     data = json.load(file)
            ^^^^^^^^^^^^^^^
   File "/Users/ata/anaconda3/lib/python3.11/json/__init__.py", line 293, in load
@@ -125,17 +116,17 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 231, in test_traintickets_scraper
+  File "/Users/ata/Desktop/chatbot/unit_tests.py", line 242, in test_traintickets_scraper
     self.assertTrue(False,'Scraper could not find any ticket.')
   File "/Users/ata/anaconda3/lib/python3.11/unittest/case.py", line 715, in assertTrue
     raise self.failureException(msg)
 AssertionError: False is not true : Scraper could not find any ticket.
 
 ----------------------------------------------------------------------
-Ran 22 tests in 0:00:30
+Ran 23 tests in 0:00:32
 
 FAILED
- (Failures=5)
+ (Failures=4)
 
 Generating HTML reports... 
-Tests/TestResults_TestChatbotConversation_TestScrapers_TestContingencies_2024-05-25_20-13-28.html
+Tests/TestResults_TestChatbotConversation_TestScrapers_TestContingencies_2024-05-28_11-22-39.html

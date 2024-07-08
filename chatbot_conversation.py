@@ -20,65 +20,101 @@ import regression_model_functions
 
 class ChatbotConversation(object):
     def __init__(self):
+        """
+        Initializes the ChatbotConversation class.
+
+        This method sets up the required file paths, initializes necessary objects, and loads the language model.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
+        
         # Paths of required files 
+        # Set file paths based on the operating system
         if sys.platform.startswith('win'):
-            self.intentions_path = os.getcwd() + "/intentions.json"
-            self.sentences_path = os.getcwd() + "/sentences.txt"
-            self.list_of_stations_dir = os.getcwd() + '/stations.csv'  
-            self.current_journey_info = os.getcwd() + '/current_journey_info.csv'
-            self.return_request_path = os.getcwd() + '/return_confirmation.txt'
-            self.return_counter_path = os.getcwd() + '/return_counter.txt'
-            self.delay_request_path = os.getcwd() + '/delay_confirmation.txt'
-            self.delay_info_data = os.getcwd() + "/delay_info.csv"
-            self.list_of_delay_stations_dir = os.getcwd() + '/delay_stations.csv'
-            self.delay_stations_info = os.getcwd() + "/delay_concatenate_train_dataset.csv"
-            self.xg_boost_model_path = os.getcwd() + '/xgboost_model.json'
-            self.contingency_request_path = os.getcwd() + '/contingency_confirmation.txt'
-            self.train_fare_scraper_counter = os.getcwd() + '/train_fare_scraper_counter.txt'
-            self.contingency_details_path = os.getcwd() + '/contingencies_details.csv'
+            self.intentions_path = os.getcwd() + "/intentions.json"  # Path to intentions file
+            self.sentences_path = os.getcwd() + "/sentences.txt"  # Path to sentences file
+            self.list_of_stations_dir = os.getcwd() + '/stations.csv'  # Path to stations file
+            self.current_journey_info = os.getcwd() + '/current_journey_info.csv'  # Path to current journey info file
+            self.return_request_path = os.getcwd() + '/return_confirmation.txt'  # Path to return confirmation file
+            self.return_counter_path = os.getcwd() + '/return_counter.txt'  # Path to return counter file
+            self.delay_request_path = os.getcwd() + '/delay_confirmation.txt'  # Path to delay confirmation file
+            self.delay_info_data = os.getcwd() + "/delay_info.csv"  # Path to delay info file
+            self.list_of_delay_stations_dir = os.getcwd() + '/delay_stations.csv'  # Path to delay stations file
+            self.delay_stations_info = os.getcwd() + "/delay_concatenate_train_dataset.csv"  # Path to delay stations info file
+            self.xg_boost_model_path = os.getcwd() + '/xgboost_model.json'  # Path to XGBoost model file
+            self.contingency_request_path = os.getcwd() + '/contingency_confirmation.txt'  # Path to contingency confirmation file
+            self.train_fare_scraper_counter = os.getcwd() + '/train_fare_scraper_counter.txt'  # Path to train fare scraper counter file
+            self.contingency_details_path = os.getcwd() + '/contingencies_details.csv'  # Path to contingency details file
         elif sys.platform.startswith('darwin'):
-            self.intentions_path = os.getcwd() + "/intentions.json"
-            self.sentences_path = os.getcwd() + "/sentences.txt"
-            self.list_of_stations_dir = os.getcwd() + '/stations.csv'
-            self.current_journey_info = os.getcwd() + '/current_journey_info.csv'
-            self.return_request_path = os.getcwd() + '/return_confirmation.txt'
-            self.return_counter_path = os.getcwd() + '/return_counter.txt'
-            self.delay_request_path = os.getcwd() + '/delay_confirmation.txt'
-            self.delay_info_data = os.getcwd() + "/delay_info.csv"
-            self.list_of_delay_stations_dir = os.getcwd() + '/delay_stations.csv'
-            self.delay_stations_info = os.getcwd() + "/delay_concatenate_train_dataset.csv"
-            self.xg_boost_model_path = os.getcwd() + '/xgboost_model.json'
-            self.contingency_request_path = os.getcwd() + '/contingency_confirmation.txt'
-            self.train_fare_scraper_counter = os.getcwd() + '/train_fare_scraper_counter.txt'
-            self.contingency_details_path = os.getcwd() + '/contingencies_details.csv'
+            self.intentions_path = os.getcwd() + "/intentions.json"  # Path to intentions file
+            self.sentences_path = os.getcwd() + "/sentences.txt"  # Path to sentences file
+            self.list_of_stations_dir = os.getcwd() + '/stations.csv'  # Path to stations file
+            self.current_journey_info = os.getcwd() + '/current_journey_info.csv'  # Path to current journey info file
+            self.return_request_path = os.getcwd() + '/return_confirmation.txt'  # Path to return confirmation file
+            self.return_counter_path = os.getcwd() + '/return_counter.txt'  # Path to return counter file
+            self.delay_request_path = os.getcwd() + '/delay_confirmation.txt'  # Path to delay confirmation file
+            self.delay_info_data = os.getcwd() + "/delay_info.csv"  # Path to delay info file
+            self.list_of_delay_stations_dir = os.getcwd() + '/delay_stations.csv'  # Path to delay stations file
+            self.delay_stations_info = os.getcwd() + "/delay_concatenate_train_dataset.csv"  # Path to delay stations info file
+            self.xg_boost_model_path = os.getcwd() + '/xgboost_model.json'  # Path to XGBoost model file
+            self.contingency_request_path = os.getcwd() + '/contingency_confirmation.txt'  # Path to contingency confirmation file
+            self.train_fare_scraper_counter = os.getcwd() + '/train_fare_scraper_counter.txt'  # Path to train fare scraper counter file
+            self.contingency_details_path = os.getcwd() + '/contingencies_details.csv'  # Path to contingency details file
+        
+        # Open output.txt file for writing
         self.fo = open("output.txt", "w")
         self.fo.write("")
-        # llm model
+        
+        # Load the language model
         self.nlp = spacy.load('en_core_web_lg')
-
+        
         self.final_chatbot = False
-
-        self.fo = open("output.txt", "a")#writing the response to the output.txt file to send the response to the node:js app.
-
-        # Scraper runner object
-        self.scraper = ScrapersRunner()
-
-        # Price finder object
-        self.cheapest_price_finder = PriceFinder()
-
-        # Contigencies object
-        self.contingency = ContingencyPlan()
-
-        # All json scraper files
+        
+        # Open output.txt file for appending
+        self.fo = open("output.txt", "a")  # Writing the response to the output.txt file to send the response to the node:js app.
+        
+        # Create objects for scraper runner, price finder, and contingency plan
+        self.scraper = ScrapersRunner()  # Scraper runner object
+        self.cheapest_price_finder = PriceFinder()  # Price finder object
+        self.contingency = ContingencyPlan()  # Contingencies object
+        
+        # List of scraper files
         self.scraper_files = ["greateranglia.json", "LNER.json", "nationalrail.json", "trainpal.json", 
-                               "southernRailways.json" , "mytrainticket.json"]
+                       "southernRailways.json" , "mytrainticket.json"]
 
     def load_intentions(self):
-        with open(self.intentions_path) as f:
-            intentions = json.load(f)
-        return intentions
+            """
+            Loads the intentions from the specified file path.
+
+            Returns:
+                intentions (dict): A dictionary containing the loaded intentions.
+            """
+            with open(self.intentions_path) as f:
+                intentions = json.load(f)
+            return intentions
 
     def load_sentences(self):
+        """
+        Load sentences from a file and categorize them based on their type.
+
+        Returns:
+            A tuple containing the categorized sentences:
+            - time_sentences: Sentences related to time.
+            - date_sentences: Sentences related to date.
+            - location_sentences: Sentences related to location.
+            - weather_sentences: Sentences related to weather.
+            - train_sentences: Sentences related to train.
+            - issue_sentences: Sentences related to help.
+            - reset_sentences: Sentences related to reset.
+            - return_sentences: Sentences related to return.
+            - delay_sentences: Sentences related to delay.
+            - contingency_sentences: Sentences related to contingency.
+        """
+        # Initialize empty variables for different types of sentences
         time_sentences = ''
         date_sentences = ''
         location_sentences = ''
@@ -90,6 +126,7 @@ class ChatbotConversation(object):
         delay_sentences = ''
         contingency_sentences = ''
 
+        # Read the sentences from the file and categorize them based on their type
         with open(self.sentences_path) as file:
             for line in file:
                 parts = line.split(' | ')
@@ -113,15 +150,26 @@ class ChatbotConversation(object):
                     delay_sentences = delay_sentences + ' ' + parts[1].strip()
                 elif parts[0] == "contingency":
                     contingency_sentences = contingency_sentences + ' ' + parts[1].strip()
-                
+
+        # Return the categorized sentences
         return time_sentences, date_sentences, location_sentences, weather_sentences, train_sentences, issue_sentences, reset_sentences, return_sentences, delay_sentences, contingency_sentences
     
     def match_sentences(self):
+        """
+        Extracts sentences from different categories and assigns labels to them.
+
+        Returns:
+        - labels: A list of labels corresponding to each sentence.
+        - sentences: A list of sentences extracted from different categories.
+        """
+        # Load sentences from different categories
         time_sentences, date_sentences, location_sentences, weather_sentences, train_sentences, issue_sentences, reset_instances, return_instances, delay_instances, contingency_instances = self.load_sentences()
 
+        # Initialize empty lists for labels and sentences
         labels = []
         sentences = []
 
+        # Extract sentences and assign labels for time category
         doc = self.nlp(time_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -129,6 +177,7 @@ class ChatbotConversation(object):
             labels.append("time")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for date category
         doc = self.nlp(date_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -136,6 +185,7 @@ class ChatbotConversation(object):
             labels.append("date")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for location category
         doc = self.nlp(location_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -143,6 +193,7 @@ class ChatbotConversation(object):
             labels.append("location")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for weather category
         doc = self.nlp(weather_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -150,6 +201,7 @@ class ChatbotConversation(object):
             labels.append("weather")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for train category
         doc = self.nlp(train_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -157,6 +209,7 @@ class ChatbotConversation(object):
             labels.append("train")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for help category
         doc = self.nlp(issue_sentences)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -164,6 +217,7 @@ class ChatbotConversation(object):
             labels.append("help")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for reset category
         doc = self.nlp(reset_instances)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -171,6 +225,7 @@ class ChatbotConversation(object):
             labels.append("reset")
             sentences.append(sentence.text.lower().strip())
         
+        # Extract sentences and assign labels for return category
         doc = self.nlp(return_instances)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -178,6 +233,7 @@ class ChatbotConversation(object):
             labels.append("return")
             sentences.append(sentence.text.lower().strip())
         
+        # Extract sentences and assign labels for delay category
         doc = self.nlp(delay_instances)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -185,6 +241,7 @@ class ChatbotConversation(object):
             labels.append("delay")
             sentences.append(sentence.text.lower().strip())
 
+        # Extract sentences and assign labels for contingency category
         doc = self.nlp(contingency_instances)
         for sentence in doc.sents:
             if sentence.text == ' ':
@@ -211,12 +268,17 @@ class ChatbotConversation(object):
         for token in doc:
             if not token.is_punct and not token.is_stop:
                 out = out + token.text + " "
-            elif token.text == 'to' or token.text == 'from':
+            elif token.text == 'to' or token.text == 'from' or token.text == 'last' or token.text == 'first':
                 out = out + token.text + " "
         return out.strip()
     
     def check_current_journey_data(self):
-        # check journey data
+        """
+        Retrieves the current journey data from a CSV file and returns it as a dictionary.
+
+        Returns:
+            dict: A dictionary containing the current journey data with keys 'origin', 'destination', 'date', and 'time'.
+        """
         current_journey_dict = {}
         with open(self.current_journey_info, newline='')as csvfile:
             reader = csv.DictReader(csvfile)
@@ -230,19 +292,36 @@ class ChatbotConversation(object):
         return current_journey_dict
     
     def check_delay_info(self):
-        # check delay information
+        """
+        Retrieves delay information from a CSV file and returns it as a dictionary.
+
+        Returns:
+            dict: A dictionary containing the delay information for the current journey.
+                  The dictionary has the following keys:
+                  - 'current_station': The current station of the journey.
+                  - 'dept_time_curr_st': The departure time from the current station.
+                  - 'dept_time_origin': The departure time from the origin station.
+        """
         current_journey_dict = {}
-        with open(self.delay_info_data, newline='')as csvfile:
+        with open(self.delay_info_data, newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for journey in reader:
-                current_station, dept_time_curr_st, dept_time_london = journey['current_station'], journey['dept_time_curr_st'], journey['dept_time_origin']
+                current_station = journey['current_station']
+                dept_time_curr_st = journey['dept_time_curr_st']
+                dept_time_london = journey['dept_time_origin']
                 current_journey_dict['current_station'] = current_station
                 current_journey_dict['dept_time_curr_st'] = dept_time_curr_st
                 current_journey_dict['dept_time_origin'] = dept_time_london
-        csvfile.close()    
+        csvfile.close()
         return current_journey_dict
     
     def check_return_request(self):
+        """
+        Checks the return request status from a file and returns it.
+
+        Returns:
+            str: The return request status.
+        """
         fo = open(self.return_request_path, "r")
         data = fo.readlines()
         for line in data[1:]:
@@ -252,12 +331,28 @@ class ChatbotConversation(object):
         return return_req.lower()
     
     def update_return_request(self, status):
+        """
+        Updates the return request status in a file.
+
+        Args:
+            status (str): The status of the return request.
+
+        Returns:
+            None
+        """
         fo = open(self.return_request_path, "w")
         fo.write("RETURN_REQUESTED\n")
         fo.write(status.lower())
         fo.close()
     
     def check_delay_request(self):
+        """
+        Reads the delay request file and returns the delay request value.
+
+        Returns:
+            str: The delay request value in lowercase.
+
+        """
         fo = open(self.delay_request_path, "r")
         data = fo.readlines()
         for line in data[1:]:
@@ -267,12 +362,29 @@ class ChatbotConversation(object):
         return return_req.lower()
     
     def update_delay_request(self, status):
+        """
+        Update the delay request status.
+
+        This method updates the delay request status by writing the status to a file.
+
+        Parameters:
+        - status (str): The delay request status to be written.
+
+        Returns:
+        None
+        """
         fo = open(self.delay_request_path, "w")
         fo.write("DELAY_REQUESTED\n")
         fo.write(status.lower())
         fo.close()
 
     def check_return_counter(self):
+        """
+        Reads the return counter from a file and returns its value.
+
+        Returns:
+            int: The value of the return counter.
+        """
         fo = open(self.return_counter_path, "r")
         data = fo.readlines()
         for line in data:
@@ -282,11 +394,27 @@ class ChatbotConversation(object):
         return int(return_counter)
 
     def update_return_counter(self, counter):
+        """
+        Updates the return counter with the given value.
+
+        Parameters:
+        counter (int): The new value for the return counter.
+
+        Returns:
+        None
+        """
         fo = open(self.return_counter_path, "w")
         fo.write(counter)
         fo.close()
 
     def check_train_fare_counter(self):
+        """
+        Reads the train fare scraper counter file and returns the value of the train fare counter.
+
+        Returns:
+            int: The value of the train fare counter.
+
+        """
         fo = open(self.train_fare_scraper_counter, "r")
         data = fo.readlines()
         for line in data:
@@ -296,11 +424,31 @@ class ChatbotConversation(object):
         return int(train_fare_counter)
 
     def update_train_fare_counter(self, counter):
+        """
+        Update the train fare counter with the given value.
+
+        Parameters:
+        - counter: The new value for the train fare counter.
+
+        Returns:
+        None
+        """
         fo = open(self.train_fare_scraper_counter, "w")
         fo.write(counter)
         fo.close()
 
     def clear_journey_data(self):
+        """
+        Clears the journey data by deleting the contents of the current_journey_info file and resetting it with the header.
+
+        This method is called once the ticket is returned for the user.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        """
         # clear csv data once ticket is returned for the user
         fo = open(self.current_journey_info, "w")
         fo.write("")
@@ -308,18 +456,48 @@ class ChatbotConversation(object):
         fo.close()
     
     def clear_delay_data(self):
+        """
+        Clears the delay information data file.
+
+        This method opens the delay information data file in write mode and clears its contents.
+        It then writes the header line to the file, which includes the column names.
+        Finally, it closes the file.
+
+        Parameters:
+        None
+
+        Returns:
+        None
+        """
         fo = open(self.delay_info_data, "w")
         fo.write("")
         fo.write("current_station,dept_time_curr_st,dept_time_origin")
         fo.close()
     
     def clear_scrapers_data(self):
-        for file in self.scraper_files:
-            fo = open(os.getcwd() + "/" + file, "w")
-            fo.write("")
-            fo.close()
+            """
+            Clears the data in the scraper files.
+
+            This method iterates over the list of scraper files and clears the contents of each file.
+
+            Args:
+                None
+
+            Returns:
+                None
+            """
+            for file in self.scraper_files:
+                fo = open(os.getcwd() + "/" + file, "w")
+                fo.write("")
+                fo.close()
     
     def fetch_delay_stations(self):
+        """
+        Fetches the delay stations and their corresponding codes and delays.
+
+        Returns:
+            station_code_map (dict): A dictionary mapping station names to a list containing the station code and delay.
+        """
         station_code_map = {}
         fo = open(self.delay_stations_info, "r")
         data = fo.readlines()
@@ -415,6 +593,15 @@ class ChatbotConversation(object):
         return station_code_map
     
     def check_contigency_status(self):
+        """
+        Reads the contingency request file and returns the status.
+
+        Returns:
+            str: The contingency status, converted to lowercase.
+
+        Raises:
+            FileNotFoundError: If the contingency request file is not found.
+        """
         fo = open(self.contingency_request_path, "r")
         data = fo.readlines()
         for line in data[1:]:
@@ -424,13 +611,34 @@ class ChatbotConversation(object):
         return contingency_req.lower()
     
     def update_contingency_status(self, status):
+        """
+        Updates the contingency status by writing it to a file.
+
+        Args:
+            status (str): The new contingency status.
+
+        Returns:
+            None
+        """
         fo = open(self.contingency_request_path, "w")
         fo.write("CONTINGENCY_REQUESTED\n")
         fo.write(status.lower())
         fo.close()
     
     def clear_contingency_details(self):
-        # clear csv data once contigency plan is returned for the user
+        """
+        Clears the contingency details stored in a CSV file.
+
+        This method opens the CSV file specified by `self.contingency_details_path` and clears its contents.
+        It then writes a header row to the file to indicate the column names.
+
+        Parameters:
+        - None
+
+        Returns:
+        - None
+        """
+        # clear csv data once contingency plan is returned for the user
         fo = open(self.contingency_details_path, "w")
         fo.write("")
         fo.write("Station1,Station2,BlockageType")
@@ -438,6 +646,16 @@ class ChatbotConversation(object):
     
     # This function is to convert minutes within range 00, 15, 30 or 45 only
     def manage_minutes_mechanism(self, input_time):
+        """
+        Converts the minutes within the minute range 00, 15, 30, 45.
+
+        Args:
+            input_time (str): The input time in the format "HH:MM".
+
+        Returns:
+            str: The converted time in the format "HH:MM".
+
+        """
         print("Converting minutes within the minute range 00, 15, 30, 45.")
         input_time = input_time.split(":")
         min = input_time[1]
@@ -460,6 +678,19 @@ class ChatbotConversation(object):
         return time_formed
     
     def extraction_delay_time(self, text):
+        """
+        Extracts the time from the given text and performs further processing.
+
+        Args:
+            text (str): The text from which the time needs to be extracted.
+
+        Returns:
+            dict: A dictionary containing the extracted time and other relevant information.
+
+        Raises:
+            ValueError: If the time format is invalid.
+
+        """
         time_extracted_dict = {}
         times_list = []
         # Regular expression pattern to match time in the format "hour[:minute] am/pm"
@@ -543,7 +774,7 @@ class ChatbotConversation(object):
                     if w.upper() in sent:
                         sent.remove(w.upper())
 
-            target_words = ["current", "present", "origin", "starting", "start"]
+            target_words = ["current", "present", "origin", "starting", "start", "previous", "last", "original", "first"]
             closest_words = {}
             # Create an index map of the words in text for faster lookup
             word_indices = {word: index for index, word in enumerate(sent)}
@@ -560,12 +791,12 @@ class ChatbotConversation(object):
             matched_time = times_list[0]
             for k, v in closest_words.items():
                 if k.lower() in target_words and matched_time in v:
-                    if k.lower() in ["current", "present"]:
+                    if k.lower() in ["current", "present", "previous", "last"]:
                         depart_current_station_time = matched_time
                         print(f"Departing Current Station time is: {depart_current_station_time}")
                         time_type_found_list.append("current")
                         break
-                    elif k.lower() in ["origin", "starting", "start"]:
+                    elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                         depart_origin_station_time = matched_time
                         print(f"Departing Origin Station time is: {depart_origin_station_time}")
                         time_type_found_list.append("origin")
@@ -576,12 +807,12 @@ class ChatbotConversation(object):
                             if st == None:
                                 continue
                             if st in matched_time:
-                                if k.lower() in ["current", "present"]:
+                                if k.lower() in ["current", "present", "previous", "last"]:
                                     depart_current_station_time = matched_time
                                     print(f"Departing Current Station time is: {depart_current_station_time}")
                                     time_type_found_list.append("current")
                                     break
-                                elif k.lower() in ["origin", "starting", "start"]:
+                                elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                                     depart_origin_station_time = matched_time
                                     print(f"Departing Origin Station time is: {depart_origin_station_time}")
                                     time_type_found_list.append("origin")
@@ -592,7 +823,7 @@ class ChatbotConversation(object):
         elif len(times_list) == 2:
             # predict delay from sevent kings departing time from london 10:00 from current station 11:00
             filtered_words_list = ["want", "city", "&", "ticket", "book", "travel", "station", "will"]
-            target_words = ["current", "present", "origin", "starting"]
+            target_words = ["current", "present", "origin", "starting", "start", "previous", "last", "first", "original"]
             for _ in range(0, len(sent)):
                 for w in filtered_words_list:
                     if w.upper() in sent:
@@ -617,17 +848,22 @@ class ChatbotConversation(object):
                     after_word = sent[target_index + 1] if target_index < len(sent) - 1 else None
                     closest_words[target.upper()] = (before_word, after_word)
             
+            # Loop through each matched time
             for matched_time in times_list:
+                # Loop through each target word and its closest words
                 for k, v in closest_words.items():
+                    # Check if the target word and matched time are in the closest words
                     if k.lower() in target_words and matched_time in v:
-                        if k.lower() in ["current", "present"]:
+                        # Check if the target word is related to "current" time
+                        if k.lower() in ["current", "present", "previous", "last"]:
                             depart_current_station_time = matched_time
                             print(f"Departing Current Station time is: {depart_current_station_time}")
                             time_type_found_list.append("current")
                             times_list.remove(matched_time)
                             del closest_words[k]
                             break
-                        elif k.lower() in ["origin", "starting", "start"]:
+                        # Check if the target word is related to "origin" time
+                        elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                             depart_origin_station_time = matched_time
                             print(f"Departing Origin Station time is: {depart_origin_station_time}")
                             time_type_found_list.append("origin")
@@ -635,18 +871,24 @@ class ChatbotConversation(object):
                             del closest_words[k]
                             break 
                     else:
+                        # Check if the target word is in the target words list
                         if k.lower() in target_words: 
+                            # Loop through each closest word
                             for st in v:
+                                # Skip if the closest word is None
                                 if st == None:
                                     continue
+                                # Check if the closest word is in the matched time
                                 if st in matched_time:
-                                    if k.lower() in ["current", "present"]:
+                                    # Check if the target word is related to "current" time
+                                    if k.lower() in ["current", "present", "previous", "last"]:
                                         depart_current_station_time = matched_time
                                         print(f"Departing Current Station time is: {depart_current_station_time}")
                                         time_type_found_list.append("current")
                                         times_list.remove(matched_time)
                                         break
-                                    elif k.lower() in ["origin", "starting", "start"]:
+                                    # Check if the target word is related to "origin" time
+                                    elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                                         depart_origin_station_time = matched_time
                                         print(f"Departing Origin Station time is: {depart_origin_station_time}")
                                         time_type_found_list.append("origin")
@@ -655,47 +897,59 @@ class ChatbotConversation(object):
                             if time_type_found_list:
                                 break
             
+            # Loop through each matched time
             remaining_matched_times = times_list[0]
             for k, v in closest_words.items():
+            # Check if the target word and remaining matched time are in the closest words
                 if k.lower() in target_words and remaining_matched_times in v:
-                    if k.lower() in ["current", "present"]:
+                    # Check if the target word is related to "current" time
+                    if k.lower() in ["current", "present", "previous", "last"]:
                         depart_current_station_time = remaining_matched_times
                         print(f"Departing Current Station time is: {depart_current_station_time}")
                         time_type_found_list.append("current")
                         break
-                    elif k.lower() in ["origin", "starting", "start"]:
+                    # Check if the target word is related to "origin" time
+                    elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                         depart_origin_station_time = remaining_matched_times
                         print(f"Departing Origin Station time is: {depart_origin_station_time}")
                         time_type_found_list.append("origin")
                         break
                 else:
+                    # Check if the target word is in the target words list
                     if k.lower() in target_words:
+                        # Remove None values from the closest words list
                         v = list(v)
                         v = [i for i in v if i is not None]
                         v = tuple(v)
+                        # Check if any of the closest words are in the remaining matched time
                         is_match = any(c in remaining_matched_times for c in v)
                         if is_match:
-                            if k.lower() in ["current", "present"]:
+                            # Check if the target word is related to "current" time
+                            if k.lower() in ["current", "present", "previous", "last"]:
                                 depart_current_station_time = remaining_matched_times
                                 print(f"Departing Current Station time is: {depart_current_station_time}")
                                 time_type_found_list.append("current")
                                 break
-                            elif k.lower() in ["origin", "starting", "start"]:
+                            # Check if the target word is related to "origin" time
+                            elif k.lower() in ["origin", "starting", "start", "first", "original"]:
                                 depart_origin_station_time = remaining_matched_times
                                 print(f"Departing Origin Station time is: {depart_origin_station_time}")
                                 time_type_found_list.append("origin")
-                                break  
+                                break
         
+        # Check if only one time type is found and it is "current"
         if len(time_type_found_list) == 1 and time_type_found_list[0] == "current":
             print(f"Departing Current Station Time Detected: {depart_current_station_time}. But Origin Station Departing Time not found. Please provide the origin station time of departure as well.")
             self.fo.write(f"CMP_7028BDepartingCurrentTime:CMP_7028B{depart_current_station_time}")
             time_extracted_dict["current_depart_station_time"] = depart_current_station_time
             return time_extracted_dict
+        # Check if only one time type is found and it is "origin"
         elif len(time_type_found_list) == 1 and time_type_found_list[0] == "origin":
             print(f"Departing Origin Station Time detected: {depart_origin_station_time}. But Current Station Departing Time not found. Please provide the current station time of departure as well.")
             self.fo.write(f"CMP_7028BDepartingOriginTime:CMP_7028B{depart_origin_station_time}")
             time_extracted_dict["origin_depart_station_time"] = depart_origin_station_time
             return time_extracted_dict
+        # Check if both "current" and "origin" time types are found
         elif len(time_type_found_list) == 2:
             print(f"Departing Current Station Time detected: {depart_current_station_time}. Departing Origin Station Time detected: {depart_origin_station_time}.")
             self.fo.write(f"CMP_7028BDepartingCurrentTime:CMP_7028B{depart_current_station_time}CMP_7028BDepartingOriginTime:CMP_7028B{depart_origin_station_time}")
@@ -704,7 +958,7 @@ class ChatbotConversation(object):
     
     def extraction_time(self, text):
         """
-        Extracts the time from the given text and returns it in a standardized format.
+        Extracts time from the given text.
 
         Args:
             text (str): The text from which to extract the time.
@@ -716,84 +970,132 @@ class ChatbotConversation(object):
             ValueError: If the time format is invalid.
 
         """
-        # Regular expression pattern to match time in the format "hour[:minute] am/pm"
-        time_pattern = r'\b(\d{1,2})(?::(\d{2}))?\s*(?:am|pm)\b'
-        # Find all matches
-        matches = re.findall(time_pattern, text, re.IGNORECASE)
-
-        # If matches are found, print the first match (assuming only one time is present)
-        if matches:
-            hour, minute = matches[0]
-            # Check if hour and minute fall within valid ranges
-            try:
-                if 0 <= int(hour) <= 23 and 0 <= int(minute) <= 59:
-                    # Add leading zero if hour is a single digit
-                    hour = hour.zfill(2)
-                    # Convert to 24-hour format
-                    if hour == '12':
-                        hour = '00'
-                    if 'pm' in text.lower() and int(hour) < 12:
-                        hour = str(int(hour) + 12)
-                    if not minute:
-                        minute = '00'  # If minute part is not present
-                    # Add leading zero if minute is a single digit
-                    minute = minute.zfill(2)
-                    time_string = hour + ':' + minute
-                    print(f"Time found:", time_string)
-                    final_time = self.manage_minutes_mechanism(time_string)
-                    input_time = datetime.strptime(final_time, "%H:%M").time()
-                    current_time = datetime.now().time()
-                    
-                    return final_time
-                    
-                else:
-                    print("Invalid time format. Time hours should be in the range 0 to 12 and minutes in the range between 00 to 59 only")
-                    return False
-            except ValueError:
-                    print("I am not that intelligent yet that I can assume time. Please give time properly. Hint: 10:00 am or 5:45 pm")
-                    return False
-        else:
-            # Regular expression pattern to match time in the format "hour[:minute] [am/pm]"
-            time_pattern = r'\b(\d{1,2})(?::(\d{2}))?(?:\s*(?:am|pm))?\b'
+        if ":" in text:
+            # Regular expression pattern to match time in the format "hour[:minute] am/pm"
+            time_pattern = r'\b(\d{1,2})(?::(\d{2}))?\s*(am|a\.m\.?|pm|p\.m\.?)\b'
             # Find all matches
             matches = re.findall(time_pattern, text, re.IGNORECASE)
-
             # If matches are found, print the first match (assuming only one time is present)
             if matches:
-                hour, minute = matches[0]
+                hour, minute, period = matches[0]
                 # Check if hour and minute fall within valid ranges
                 try:
-                    if 0 <= int(hour) <= 23 and 0 <= int(minute) <= 59:
+                    if 0 <= int(hour) <= 12 and (minute == "" or 0 <= int(minute) <= 59):
                         # Add leading zero if hour is a single digit
                         hour = hour.zfill(2)
-                        # Convert to 24-hour format
-                        if hour == '12':
-                            hour = '00'
-                        if 'pm' in text.lower() and int(hour) < 12:
-                            hour = str(int(hour) + 12)
                         if not minute:
-                            minute = '00'  # If minute part is not present
-                        # Add leading zero if minute is a single digit
-                        minute = minute.zfill(2)
+                            minute = '00'
+                        else:
+                            # Add leading zero if minute is a single digit
+                            minute = minute.zfill(2)
+                        # Convert to 24-hour format
+                        period = period.replace('.', '').lower()
+                        if period == 'pm' and hour != '12':
+                            hour = str(int(hour) + 12)
+                        elif period == 'am' and hour == '12':
+                            hour = '00'
                         time_string = hour + ':' + minute
-                        print("Time found:", time_string)
+                        print(f"Time found:", time_string)
                         final_time = self.manage_minutes_mechanism(time_string)
-                        input_time = datetime.strptime(final_time, "%H:%M").time()
-                        current_time = datetime.now().time()
-                        
                         return final_time
-                        
                     else:
                         print("Invalid time format. Time hours should be in the range 0 to 12 and minutes in the range between 00 to 59 only")
                         return False
                 except ValueError:
+                        print("I am not that intelligent yet that I can assume time. Please give time properly. Hint: 10:00 am or 5:45 pm")
+                        return False
+            else:
+                # Regular expression pattern to match time in the format "hour[:minute] [am/pm]"
+                time_pattern = r'\b(\d{1,2})(?::(\d{2}))?\s*(am|a\.m\.|pm|p\.m\.)\b'
+                # Find all matches
+                matches = re.findall(time_pattern, text, re.IGNORECASE)
+
+                # If matches are found, print the first match (assuming only one time is present)
+                if matches:
+                    hour, minute = matches[0]
+                    # Check if hour and minute fall within valid ranges
+                    try:
+                        if 0 <= int(hour) <= 23 and 0 <= int(minute) <= 59:
+                            # Add leading zero if hour is a single digit
+                            hour = hour.zfill(2)
+                            # Convert to 24-hour format
+                            if hour == '12':
+                                hour = '00'
+                            if 'pm' in text.lower() and int(hour) < 12:
+                                hour = str(int(hour) + 12)
+                            if not minute:
+                                minute = '00'  # If minute part is not present
+                            # Add leading zero if minute is a single digit
+                            minute = minute.zfill(2)
+                            time_string = hour + ':' + minute
+                            print("Time found:", time_string)
+                            final_time = self.manage_minutes_mechanism(time_string)
+                            return final_time
+                        else:
+                            print("Invalid time format. Time hours should be in the range 0 to 12 and minutes in the range between 00 to 59 only")
+                            return False
+                    except ValueError:
+                        print("I am not that intelligent yet that I can assume time. Please give time properly. Hint: 10:00 am or 5:45 pm.")
+                        return False
+                else:
+                    print("Unable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm")
+                    self.fo.write("CMP_7028BUnable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm. ")
+
+        else:
+            time_pattern = r'\b(\d{1,2})\s*(?::?(\d{2}))?\s*(am|a\.m\.?|pm|p\.m\.?)?\b'
+    
+            # Find all matches
+            matches = re.findall(time_pattern, text, re.IGNORECASE)
+            
+            # If matches are found, process each match
+            for match in matches:
+                hour, minute, period = match
+                # Check if the minute part is present and if hour is valid
+                try:
+                    if (0 <= int(hour) <= 12 if period else 0 <= int(hour) <= 23) and (minute == "" or 0 <= int(minute) <= 59):
+                        # Add leading zero if hour is a single digit
+                        hour = hour.zfill(2)
+                        
+                        # Default minute to '00' if not provided
+                        if not minute:
+                            minute = '00'
+                        else:
+                            # Add leading zero if minute is a single digit
+                            minute = minute.zfill(2)
+                        
+                        # Convert to 24-hour format if period is provided
+                        if period:
+                            period = period.replace('.', '').lower()
+                            if period == 'pm' and hour != '12':
+                                hour = str(int(hour) + 12)
+                            elif period == 'am' and hour == '12':
+                                hour = '00'
+                        
+                        time_string = f"{hour}:{minute}"
+                        print(f"Time found: {time_string}")
+                        # Replace self.manage_minutes_mechanism with actual processing function
+                        final_time = time_string  # Replace with your processing function
+                        final_time = self.manage_minutes_mechanism(time_string)
+                        return final_time
+                    else:
+                         print("Invalid time format. Time hours should be in the range 0 to 12 and minutes in the range between 00 to 59 only")
+                         return False
+                except ValueError:
                     print("I am not that intelligent yet that I can assume time. Please give time properly. Hint: 10:00 am or 5:45 pm.")
                     return False
-            else:
-                print("Unable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm")
-                self.fo.write("CMP_7028BUnable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm. ")
+            print("Unable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm")
+            self.fo.write("CMP_7028BUnable to extract time. Please give time properly. Hint: 10:00 am or 5:45 pm. ")
 
     def convert_date(self, date_string):
+        """
+        Converts a date string in the format 'ddth Month' to 'dd/mm/yyyy' format.
+
+        Args:
+            date_string (str): The date string to be converted.
+
+        Returns:
+            str: The converted date string in 'dd/mm/yyyy' format.
+        """
         # Remove 'date' from the string
         date_string = date_string.replace('date ', '')
         date = datetime.strptime(date_string, '%dth %B')
@@ -801,42 +1103,71 @@ class ChatbotConversation(object):
         return date.strftime('%d/%m/%Y')
     
     def date_extraction_via_regex(self, text):
+        """
+        Extracts dates from the given text using regular expressions.
+
+        Args:
+            text (str): The text from which dates need to be extracted.
+
+        Returns:
+            list: A list of extracted dates in the format 'dd/mm/yyyy'.
+
+        Raises:
+            None
+
+        """
         final_date_list = []
-        date_pattern_1 = r'\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\s+(\d{4})\b'
+        date_pattern_1 = r'\b(\d{1,2})(st|nd|rd|th)?\s+of\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b'
         matches_1 = re.findall(date_pattern_1, text, re.IGNORECASE)
         if matches_1:
             date_tuple = matches_1[0]
-            day_no = date_tuple[1]
+            day_no = date_tuple[0]
             if int(day_no) / 10 < 1:
                 day_no = f"0{str(day_no)}"
-            month_number = datetime.strptime(date_tuple[0], '%B').month
+            month_number = datetime.strptime(date_tuple[2], '%B').month
             if int(month_number) / 10 < 1:
                 month_number = f"0{str(month_number)}"
-            formatted_date = f"{day_no}/{month_number}/{date_tuple[2]}"
+            formatted_date = f"{day_no}/{month_number}/{date_tuple[3]}"
             print(f"Extracted date is: {formatted_date}.")
             self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
             final_date_list.append(formatted_date)
             return final_date_list
         else:
-            date_pattern_2 = r'\b(\d{1,2}(?:st|nd|rd|th)?\s+(?:January|February|March|April|May|June|July|August|September|October|November|December)|(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2})\s+(\d{4})\b'
+            date_pattern_2 = r'\b(\d{1,2}(?:st|nd|rd|th)?)\s*(?:of\s+)?(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})\b|\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}(?:st|nd|rd|th)?)\s+(\d{4})\b'
             matches_2 = re.findall(date_pattern_2, text, re.IGNORECASE)
             if matches_2:
                 date_tuple = matches_2[0]
-                day_no = re.findall(r'[0-9]+', date_tuple[0])[0]
-                if int(day_no) / 10 < 1:
-                    day_no = f"0{str(day_no)}"
-                month_name = date_tuple[0].split()[1]
-                month_number = datetime.strptime(month_name, '%B').month
-                if int(month_number) / 10 < 1:
-                    month_number = f"0{str(month_number)}" 
+                try:
+                    day_no = re.findall(r'[0-9]+', date_tuple[0])[0]
+                    if int(day_no) / 10 < 1:
+                        day_no = f"0{str(day_no)}"
+                    
+                    month_name = date_tuple[1].split()[0]
+                    month_number = datetime.strptime(month_name, '%B').month
+                    if int(month_number) / 10 < 1:
+                        month_number = f"0{str(month_number)}" 
 
-                formatted_date = f"{day_no}/{month_number}/{date_tuple[1]}"
-                print(f"date: {formatted_date}.")
-                self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
-                final_date_list.append(formatted_date)
-                return final_date_list
+                    formatted_date = f"{day_no}/{month_number}/{date_tuple[2]}"
+                    print(f"date: {formatted_date}.")
+                    self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
+                    final_date_list.append(formatted_date)
+                    return final_date_list
+                except IndexError:
+                    day_no = re.findall(r'[0-9]+', date_tuple[4])[0]
+                    if int(day_no) / 10 < 1:
+                        day_no = f"0{str(day_no)}"
+                    month_name = date_tuple[3].split()[0]
+                    month_number = datetime.strptime(month_name, '%B').month
+                    if int(month_number) / 10 < 1:
+                        month_number = f"0{str(month_number)}" 
+
+                    formatted_date = f"{day_no}/{month_number}/{date_tuple[5]}"
+                    print(f"date: {formatted_date}.")
+                    self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
+                    final_date_list.append(formatted_date)
+                    return final_date_list
             else:
-                date_pattern_3 = r'\b\d{1,2}(?:st|nd|rd|th)?\s+(?:january|february|march|april|may|june|july|august|september|october|november|december)\b'
+                date_pattern_3 = r'\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:of\s+)?(january|february|march|april|may|june|july|august|september|october|november|december)\b'
                 matches_3 = re.findall(date_pattern_3, text, re.IGNORECASE)
                 if matches_3:
                     date_str = matches_3[0]
@@ -845,7 +1176,7 @@ class ChatbotConversation(object):
                     current_year = datetime.now().year
                     date_tuple = (date_str, str(current_year))
                     try:
-                        date_str = date_tuple[0] + ' ' + date_tuple[1]
+                        date_str = date_tuple[0][0] + ' ' +  date_tuple[0][1] + ' ' + date_tuple[1]
                         date_obj = datetime.strptime(date_str, '%d %B %Y')
                         formatted_date = date_obj.strftime('%d/%m/%Y')
                         print(f"Extracted date is: {formatted_date}")
@@ -870,9 +1201,63 @@ class ChatbotConversation(object):
                         final_date_list.append(formatted_date)
                         return final_date_list
                 else:
-                    print("Date not found. Hint: Try giving 8 june 2024 or 8th june 2024 or check for any spelling mistakes")
-                    self.fo.write("CMP_7028BDate not found. Hint: Try giving 8 june 2024 or 8th june 2024. ")
-                    return final_date_list
+                    date_pattern_4 =  r'\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+of\s+(\d{1,2}(?:st|nd|rd|th)?)\s+(\d{4})\b'
+
+                    matches_4 = re.findall(date_pattern_4, text, re.IGNORECASE)
+                    if matches_4:
+                        date_tuple = matches_4[0]
+                        day_no = re.findall(r'[0-9]+', date_tuple[1])[0]
+                        if int(day_no) / 10 < 1:
+                            day_no = f"0{str(day_no)}"
+                    
+                        month_name = date_tuple[0].split()[0]
+                        month_number = datetime.strptime(month_name, '%B').month
+                        if int(month_number) / 10 < 1:
+                            month_number = f"0{str(month_number)}" 
+
+                        formatted_date = f"{day_no}/{month_number}/{date_tuple[2]}"
+                        print(f"date: {formatted_date}.")
+                        self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
+                        final_date_list.append(formatted_date)
+                        return final_date_list
+                    else:
+                        date_pattern_5 = r'\b(January|February|March|April|May|June|July|August|September|October|November|December)\s*(?:of\s+)?(\d{1,2}(?:st|nd|rd|th)?)?\s*(\d{1,2}:\d{2}\s*(?:am|pm))?\b'
+                        matches_5 = re.findall(date_pattern_5, text, re.IGNORECASE)
+                        if matches_5:
+                            date_str = matches_5[0]
+                            print(f"No year specified. Assuming it's current year by default.")
+                            self.fo.write(f"CMP_7028BNo year specified. Assuming it's current year by default. ")
+                            current_year = datetime.now().year
+                            date_tuple = (date_str, str(current_year))
+                            try:
+                                date_str = date_tuple[0][1] + ' ' +  date_tuple[0][0] + ' ' + date_tuple[1]
+                                date_obj = datetime.strptime(date_str, '%d %B %Y')
+                                formatted_date = date_obj.strftime('%d/%m/%Y')
+                                print(f"Extracted date is: {formatted_date}")
+                                self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}. ")
+                                final_date_list.append(formatted_date)
+                                return final_date_list
+                            except ValueError or TypeError:
+                                date_str = date_tuple[0][1] + ' ' +  date_tuple[0][0] + ' ' + date_tuple[1]
+                                try:
+                                    date_obj = datetime.strptime(date_str, '%dth %B %Y')
+                                except ValueError or TypeError:
+                                    try:
+                                        date_obj = datetime.strptime(date_str, '%dnd %B %Y')
+                                    except ValueError or TypeError:
+                                        try:
+                                            date_obj = datetime.strptime(date_str, '%dst %B %Y')
+                                        except ValueError or TypeError:
+                                            date_obj = datetime.strptime(date_str, '%drd %B %Y')
+                                formatted_date = date_obj.strftime('%d/%m/%Y')
+                                print(f"Extracted date is: {formatted_date}.")
+                                self.fo.write(f"CMP_7028BDate:CMP_7028B{formatted_date}")
+                                final_date_list.append(formatted_date)
+                                return final_date_list
+                        else:
+                            print("Date not found. Hint: Try giving 8 june 2024 or 8th june 2024 or check for any spelling mistakes")
+                            self.fo.write("CMP_7028BDate not found. Hint: Try giving 8 june 2024 or 8th june 2024. ")
+                            return final_date_list
     
     def extract_date_via_nlp(self, text):
         lemma_text = self.lemmatise_and_clean(text)
@@ -886,6 +1271,20 @@ class ChatbotConversation(object):
             print(f'DATES EXTRACTED BY NLP: {dates}')
             if not dates:
                 dates = self.date_extraction_via_regex(text)
+                if dates:
+                    input_date = datetime.strptime(dates[0], "%d/%m/%Y")
+                    today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+                    if input_date >= today:
+                        return dates
+                    else:
+                        print("Date can't be of previous day.")
+                        self.fo.write("CMP_7028BPastDateCMP_7028BDate can't be of previous day")
+                        return False
+                else:
+                    return False
+        except ValueError:  
+            dates = self.date_extraction_via_regex(text) 
+            if dates:
                 input_date = datetime.strptime(dates[0], "%d/%m/%Y")
                 today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
                 if input_date >= today:
@@ -894,18 +1293,20 @@ class ChatbotConversation(object):
                     print("Date can't be of previous day.")
                     self.fo.write("CMP_7028BPastDateCMP_7028BDate can't be of previous day")
                     return False
-        except ValueError:
-            dates = self.date_extraction_via_regex(text) 
-            input_date = datetime.strptime(dates[0], "%d/%m/%Y")
-            today = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
-            if input_date >= today:
-                return dates
             else:
-                print("Date can't be of previous day.")
-                self.fo.write("CMP_7028BPastDateCMP_7028BDate can't be of previous day")
                 return False
     
     def extract_delay_location(self, user_input):
+        """
+        Extracts the delay location from the user input.
+
+        Args:
+            user_input (str): The user input containing the location information.
+
+        Returns:
+            dict: A dictionary containing the extracted delay location.
+
+        """
         station_extracted_dict = {}
         matches, stations_name_list = [], []
         get_stations_dict = self.fetch_delay_stations()
@@ -956,6 +1357,18 @@ class ChatbotConversation(object):
             station_extracted_dict["current_depart_station"] = matches[0]
             return station_extracted_dict
     
+    def extract_location(self, _text):
+        """
+        Extracts the location from the given text.
+
+        Args:
+            _text (str): The text from which the location needs to be extracted.
+
+        Returns:
+            dict: A dictionary containing the extracted location information.
+        """
+        station_extracted_dict = {}
+        # Rest of the code...
     def extract_location(self, _text):
         station_extracted_dict = {}
         text = self.lemmatise_and_clean(_text)
@@ -1212,14 +1625,23 @@ class ChatbotConversation(object):
             return station_extracted_dict
         
     def return_ticket_mechanism(self, sentence):
+        """
+        This method handles the process of finding a return ticket for the user's journey.
+
+        Args:
+            sentence (str): The user's input sentence.
+
+        Returns:
+            bool: True if the return ticket is found, False otherwise.
+        """
         get_return_counter = self.check_return_counter()
         get_return_counter += 1
         self.update_return_counter(str(get_return_counter))
 
         current_info_dict = self.check_current_journey_data()
         if not current_info_dict:
-            print("Please peform the one-way search first in order to get return fares.")
-            self.fo.write("Please peform the one-way search first in order to get return fares. ")
+            print("Please perform the one-way search first in order to get return fares.")
+            self.fo.write("Please perform the one-way search first in order to get return fares. ")
             self.update_return_request("no")
             self.update_return_counter("0")
             return False
@@ -1269,6 +1691,15 @@ class ChatbotConversation(object):
                 self.scraper_run()
 
     def check_intention_by_keyword(self, sentence):
+        """
+        Checks the intention of the user's sentence based on keywords.
+
+        Args:
+            sentence (str): The user's input sentence.
+
+        Returns:
+            bool or None: Returns True if the intention is met, None otherwise.
+        """
         intentions_met = False
         intentions = self.load_intentions()
         for word in sentence.split():
@@ -1326,6 +1757,16 @@ class ChatbotConversation(object):
             return None
     
     def delay_information_extraction_mechanism(self, user_input, extraction_type):
+        """
+        Extracts delay information from user input based on the extraction type.
+
+        Args:
+            user_input (str): The user input containing delay information.
+            extraction_type (str): The type of information to extract (e.g., "LOCATION", "TIME").
+
+        Returns:
+            bool: True if the extraction is successful and the information is saved, False otherwise.
+        """
         journey_info = pd.read_csv(self.delay_info_data)
         user_input = self.lemmatise_and_clean(user_input)
 
@@ -1365,6 +1806,16 @@ class ChatbotConversation(object):
     
     # extract and write required information
     def information_extraction_mechanism(self, user_input, extraction_type):
+        """
+        Extracts information from user input based on the specified extraction type.
+
+        Args:
+            user_input (str): The user input from which information needs to be extracted.
+            extraction_type (str): The type of information to be extracted. Valid values are "LOCATION", "DATE", and "TIME".
+
+        Returns:
+            bool: True if the information is successfully extracted and saved, False otherwise.
+        """
         journey_info = pd.read_csv(self.current_journey_info)
 
         if extraction_type.upper() in ["LOCATION"]:
@@ -1404,9 +1855,15 @@ class ChatbotConversation(object):
                 return False
             else:
                 journey_info.at[0, 'time'] = get_time
-                journey_info.to_csv(self.current_journey_info, index=False) 
+                journey_info.to_csv(self.current_journey_info, index=False)
     
     def time_conversion_and_encoding(self):
+        """
+        Converts the time strings to datetime format and encodes the station name.
+        
+        Returns:
+            df (pandas.DataFrame): A DataFrame containing the encoded station name and the converted time values.
+        """
         get_info = self.check_delay_info()
         get_station_name = get_info['current_station']
         get_current_station_dept_time = get_info['dept_time_curr_st']
@@ -1435,6 +1892,12 @@ class ChatbotConversation(object):
         return df
     
     def model_loading_and_prediction(self):
+        """
+        Loads the model, performs time conversion and encoding, and predicts the delay.
+
+        Returns:
+            float: The predicted delay time.
+        """
         df = self.time_conversion_and_encoding()
         print("Predicting Delay..")
         final_delay_time = regression_model_functions.make_delay_prediction(df, str)
@@ -1443,6 +1906,17 @@ class ChatbotConversation(object):
         return final_delay_time
     
     def scraper_run(self):
+        """
+        Runs the scraper to find the cheapest train ticket for the given journey.
+
+        This method checks if all the required information for the journey is received. If all the required information is
+        available, it proceeds to run the scrapers via multi-processing. After running the scrapers, it compares the prices
+        and finds the cheapest train ticket. It then writes the journey details, including the cheapest website, price, and
+        link, to a file.
+
+        Returns:
+            None
+        """
         # check required info dict again if all required information received or not
         current_info_dict = self.check_current_journey_data()
         if ('origin' in current_info_dict.keys() and current_info_dict['origin'] not in ['', None]) and ('destination' in current_info_dict.keys() and current_info_dict['destination'] not in ['', None]) and ('date' in current_info_dict.keys() and current_info_dict['date'] not in ['', None]) and ('time' in current_info_dict.keys() and current_info_dict['time'] not in ['', None]):
@@ -1477,12 +1951,23 @@ class ChatbotConversation(object):
             self.fo.write(f"CMP_7028BWebsite Name:CMP_7028B{cheapest_website}")
             self.fo.write(f"CMP_7028BPrice:CMP_7028B{chepeast_price}")
             self.fo.write(f"CMP_7028BLink:CMP_7028B{wesbite_link}")
-            return_status = self.check_return_request()
-            if return_status == "no":
-                self.fo.write(f"CMP_7028BReturnCMP_7028B")  
+            # return_status = self.check_return_request()
+            return_counter = self.check_return_counter()
+            print(f"RETURN COUNTER: {return_counter}")
+            if int(return_counter) == 0:
+                self.fo.write(f"CMP_7028BReturnCMP_7028B")
+                  
     
     def delay_progress_check(self, user_input):
-        # Extract as much information possible and write data progress accordingly
+        """
+        Check the progress of delay information extraction and update the data accordingly.
+
+        Args:
+            user_input (str): The user's input.
+
+        Returns:
+            None
+        """
         current_info_dict = self.check_delay_info()
         if not current_info_dict:
             print("No saved info found. Extracting fresh delay information..")
@@ -1504,7 +1989,15 @@ class ChatbotConversation(object):
             self.delay_information_extraction_mechanism(user_input, extraction_type="location")
     
     def progress_check(self, user_input):
-        # Extract as much information possible and write data progress accordingly
+        """
+        Checks the progress of the conversation and extracts information based on the current state.
+
+        Args:
+            user_input (str): The user's input.
+
+        Returns:
+            None
+        """
         current_info_dict = self.check_current_journey_data()
         if not current_info_dict:
             self.fo.write("Happy to find the train tickets for you. ")
@@ -1547,19 +2040,29 @@ class ChatbotConversation(object):
             self.information_extraction_mechanism(user_input, extraction_type="date")
     
     def delay_chatbot_response(self, user_input):
+        """
+        This method handles the delay chatbot response. It writes the delay information to a file,
+        checks the progress of the delay, retrieves the delay information, and calculates the delay prediction.
+
+        Args:
+            user_input (str): The user input.
+
+        Returns:
+            None
+        """
         self.fo.write('CMP_7028B DELAY CMP_7028B')
         self.delay_progress_check(user_input)
         final_info_dict = self.check_delay_info()
         if ('current_station' in final_info_dict.keys() and final_info_dict['current_station'] not in ['', None]) and ('dept_time_curr_st' in final_info_dict.keys() and final_info_dict['dept_time_curr_st'] not in ['', None]) and ('dept_time_origin' in final_info_dict.keys() and final_info_dict['dept_time_origin'] not in ['', None]):
-                print("Received all required information. Thank you. Proceeding to calculate delay prediction. ")
-                model_prediction = self.model_loading_and_prediction()
-                if model_prediction:
-                    check_delay_request = self.check_delay_request()
-                    if check_delay_request == "yes":
-                        self.update_delay_request("no")
-                        self.clear_delay_data()
-                else:
-                    print("Un-able to calculate delay at the moment. Please try again later. ")
+            print("Received all required information. Thank you. Proceeding to calculate delay prediction. ")
+            model_prediction = self.model_loading_and_prediction()
+            if model_prediction:
+                check_delay_request = self.check_delay_request()
+                if check_delay_request == "yes":
+                    self.update_delay_request("no")
+                    self.clear_delay_data()
+            else:
+                print("Un-able to calculate delay at the moment. Please try again later. ")
     
     def chat_response(self, user_input, min_similarity=0.60):
             cleaned_user_input = self.lemmatise_and_clean(user_input)
@@ -1578,6 +2081,7 @@ class ChatbotConversation(object):
             print(f'similarity : {labels[max_similarity_idx]}')
             print(f'similarity index : {[max_similarity_idx]}')
             print(f'similarity index : {similarities[max_similarity_idx]}')
+            
             if similarities[max_similarity_idx] >= min_similarity:
                 print(f'similarity : {labels[max_similarity_idx]}')
                 if labels[max_similarity_idx] == 'train' or labels[max_similarity_idx] == "location" or labels[max_similarity_idx] == "date" or labels[max_similarity_idx] == "time":
@@ -1782,7 +2286,7 @@ class ChatbotConversation(object):
                  
                 if "contingency" in user_input or "blockage" in user_input or "partial blockage" in user_input or "full blockage" in user_input or "Contingency" in user_input or "Blockage" in user_input or "Partial" in user_input or "Full Blockage" in user_input or "contingencies" in user_input or "Contingencies" in user_input:
 
-                    if (current_info_dict['origin']!='' or current_info_dict['destination']!='' or current_info_dict['date']!='' or current_info_dict['time']!=''):
+                    if (current_info_dict and (current_info_dict['origin']!='' or current_info_dict['destination']!='' or current_info_dict['date']!='' or current_info_dict['time']!='')):
                         print("You have an on-going cheapest fare search. Please reset it first in order to proceed with the new search with new details.")
                         self.fo.write("CMP_7028BOnGoingCMP_7028BYou have an on-going cheapest fare search. Please reset it first in order to proceed with the new search with new details.")
                         self.update_train_fare_counter("1")
@@ -1792,7 +2296,7 @@ class ChatbotConversation(object):
 
                 elif  "delay" in user_input or "predict" in user_input or "predict delay" in user_input:
 
-                    if (current_info_dict['origin']!='' or current_info_dict['destination']!='' or current_info_dict['date']!='' or current_info_dict['time']!=''):
+                    if (current_info_dict and (current_info_dict['origin']!='' or current_info_dict['destination']!='' or current_info_dict['date']!='' or current_info_dict['time']!='')):
                         print("You have an on-going cheapest fare search. Please reset it first in order to proceed with the new search with new details.")
                         self.fo.write("CMP_7028BOnGoingCMP_7028BYou have an on-going cheapest fare search. Please reset it first in order to proceed with the new search with new details.")
                         self.update_train_fare_counter("1")
@@ -1812,8 +2316,8 @@ if __name__ == "__main__":
     json_data = json.loads(sys.argv[1])#getting data from the server side
     obj.chat_response(json_data)
 
-    # obj.chat_response("can you assist me in finding train ticket from norwich to london liverpool street for the date 17th may 2024 for 10:35 pm?")
-    # obj.chat_response("i want a return as well")
+    # obj.chat_response("can you assist me in finding train ticket from norwich to london liverpool street for the date 5th june 2024 for 10:35 am?")
+    # obj.chat_response("i want a return as well on 9th june at 11 am")
     # obj.chat_response("the date is 18th may")
     # obj.chat_response("please predict the possible delay")
     # obj.chat_response("I would like to find train tickets from norwich to london liverpool street")
@@ -1839,4 +2343,6 @@ if __name__ == "__main__":
     # obj.chat_response('the time will be 12:33 pm and the date will be 27th may')
     # obj.extract_date_via_nlp("can you assist me in finding train ticket from norwich to london liverpool street for the date 17th may 2024 for 10:35 am?")
     # obj.extraction_time("can you assist me in finding train ticket from norwich to london liverpool street for the date 24th may 2024 for 10:35 am?")
-    
+    # obj.date_extraction_via_regex("can you assist me in finding train ticket from norwich to london liverpool street for the date june 16 10:35 am?")
+    # obj.date_extraction_via_regex("the date is june of 16th 2024")
+    # obj.chat_response("the time will be 12:34 a.m")

@@ -29,6 +29,12 @@ body{
     padding: 1% 0;
 }
 
+.clipBoard{
+    opacity: 0;
+    font-size: 20px;
+}
+
+
 .bot_response {
     display: flex;
     flex-direction: row; /* Aligns children (like <p>) vertically */
@@ -73,6 +79,8 @@ body{
     display: block;
 }
 .LogoDiv{
+    align-items: center;    
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     float: right;
@@ -89,6 +97,8 @@ body{
     animation: borderAnim 2s infinite;
 }
 .LogoDivBot{
+    align-items: center;    
+    justify-content: center;
     display: flex;
     flex-wrap: wrap;
     float: left;
@@ -99,7 +109,7 @@ body{
     margin: 7px 14px 7px 7px;
     /* margin-bottom: 58px; */
     position: relative;
-    background-color:rgba(120, 120, 120);
+    background-color:rgba(80, 80, 80);
     opacity: 0;
     transition: opacity 0.9s ease-in-out;
     animation: borderAnim 2s infinite;

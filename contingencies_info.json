@@ -43,20 +43,20 @@
                 "Customers London-Norwich to travel via Cambridge and GTR to Kings Cross",
                 "Local Bus 459 operates Stowmarket to Diss."
             ],
-            "Manningtree:Norwich": [
+            "Manningtree,Norwich": [
                 "Advance Purchase Ticket holders may travel up to 60 minutes earlier/later than their booked train (Intercity services between London and Norwich).",
                 "Establish rail replacement bus link Diss-Norwich."
             ],
-            "Ipswich:Diss": [
+            "Ipswich,Diss": [
                 "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
                 "Local Bus 459 operates Stowmarket to Diss."
             ],
-            "Ipswich:Norwich": [
+            "Ipswich,Norwich": [
                 "Local Bus 87/88 operates all stations Ipswich to Stowmarket.",
                 "Local Bus 459 operates Stowmarket to Diss.",
                 "Establish rail replacement bus link Diss-Norwich."
             ],
-            "Stowmarket:Norwich": [
+            "Stowmarket,Norwich": [
                 "Local Bus 459 operates Stowmarket to Diss.",
                 "Establish rail replacement bus link Diss-Norwich."
             ]

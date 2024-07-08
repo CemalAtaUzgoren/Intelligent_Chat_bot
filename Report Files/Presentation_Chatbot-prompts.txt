@@ -1,0 +1,47 @@
+>> traın search
+I will be departing from Norwich travelling to London. The departure time is 1:15pm and I want to leave on the 1st June.
+I will be arriving at London Liverpool Street on the 6th June
+
+I want a return on the 9th June at 11am
+
+
+
+
+
+
+
+
+
+>> Delay Predıctıon
+Please can you predict a train delay?
+The locatoin of my prevoius station was Ipswich.
+The departing time from the previous station was 18:09.
+The departing time from the first station was 17:01.
+
+
+
+
+
+
+
+
+>> contingency
+Give me a contingency plan?
+The severity of the blockage is a Full Line Blockage between stations diss and norwich
+
+
+
+
+
+
+>> restrıctıons
+Please find a ticket from norwich
+can you predict a delay?
+
+
+
+
+
+>>Voıce over
+'Jarvıs'
+'fınd me the contingency plsn'

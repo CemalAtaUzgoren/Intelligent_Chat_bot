@@ -1,5 +1,12 @@
 \section{Testing}
 \subsection{Unit Testing}
+As seen in Figure \ref{Fig: unit test results} a total of 23 unit tests were developed and implemented, these test can be split into three categorise: ``conversational functions'', ``scraping functions'' and ``contingency functions''. Table \ref{Tab: unit tests convo functions} shows the results of the conversational function tests. From these results we can see one failed case ``test\_lemmatise\_4'', the failure was a result of the lemmatise function not removing the ``@'' from the input string. Table \ref{tab: unit tests web scraping} show the results of each web scraping function implemented. From these results we can see 3 scraping scripts have failed, these failures can be a result of various errors. The suspected issues are: 
+\begin{itemize}
+    \item Blocked Selenium client from anti bot scripts
+    \item Website HTML alterations which could break the Selenium object detection functions
+\end{itemize}
+
+
 \subsection{Integration Testing}
 
 \begin{longtable}{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}
@@ -8,7 +15,7 @@
     \hline
     \endfirsthead
     \multicolumn{4}{c}%
-    {\tablename\ \thetable\ -- \textit{}} \\
+    {\tablename\ \thetable\ \textit{}} \\
     \hline
     \textbf{Test ID} & \textbf{Integration point} & \textbf{Test Description} & \textbf{Expected result} \\
     \hline
@@ -18,30 +25,29 @@
     \hline
     \endlastfoot
     
-    P1 & Part 1 (Finding the cheapest fare) & Test the functionality of finding the cheapest fare. Start a conversation to provide the required information for ticket booking. & Chat Bot returns the cheapest train ticket fare. \\
+    P1 & Part 1 (Finding the cheapest fare) & Test the functionality of finding the cheapest fare. Start a conversation to provide the required information for ticket booking. & Chatbot returns the cheapest train ticket fare. \\
     \hline
     
-    P2 & Part 2 (Delay Estimation) & Test delay estimation intelligence of the Chat-bot. Ask for the delayed train's information and get the predicted arriving time. & Chat-bot estimates the delay correctly regarding to provided details. \\
+    P2 & Part 2 (Delay Estimation) & Test delay estimation intelligence of the chatbot. Ask for the delayed train's information and get the predicted arriving time. & Chatbot estimates the delay correctly regarding to provided details. \\
     \hline
     
-    P3 & Part 3 (Contingency recommendations) & Test the contingency function of the Chat-bot. Give a to get a contingency plan for that circumstance. & Chat-bot provides appropriate probability recommendations according to predefined rules and regulations \\
+    P3 & Part 3 (Contingency recommendations) & Test the contingency function of the chatbot. Give a to get a contingency plan for that circumstance. & Chatbot provides appropriate probability recommendations according to predefined rules and regulations \\
     \hline
     
-    TC1 & Part 1 and Part 2 & Initialize a conversation about fare search. After completing the train ticket search, ask for delay estimation. & Chat-bot finds the cheapest fare and estimated the delay correctly without being influenced by each other. \\
+    TC1 & Part 1 and Part 2 & Initialise a conversation about fare search. After completing the train ticket search, ask for delay estimation. & Chatbot finds the cheapest fare and estimated the delay correctly without being influenced by each other. \\
     \hline
     
-    TC2 & Part 2 and Part 3 & Start conversation for both part 2 and 3 respectively, and examine the results to make sure that the part 2 and 3 not effect each other. & Chat-bot should perform the delay estimation and contingency plan recommendation correctly. \\
+    TC2 & Part 2 and Part 3 & Start conversation for both part 2 and 3 respectively, and examine the results to make sure that the part 2 and 3 not effect each other. & Chatbot should perform the delay estimation and contingency plan recommendation correctly. \\
     \hline
     
-    TC3 & Part 1 and Part 3 & Start conversation for both part 1 and 3 respectively, and examine the results to make sure that the part 1 and 3 not effect each other. &  Chat-bot should perform the cheapest train fare search and delay estimation correctly. \\
+    TC3 & Part 1 and Part 3 & Start conversation for both part 1 and 3 respectively, and examine the results to make sure that the part 1 and 3 not effect each other. &  Chatbot should perform the cheapest train fare search and delay estimation correctly. \\
     \hline
     
-    TC4 & Contradictions & Test the contradiction feature that restricts the user switch to another subject while an ongoing conversation takes place about something else. & Chat-bot displays a informative message which says to switch to another conversation either reset the current conversation or finalise it. \\
+    TC4 & Contradictions & Test the contradiction feature that restricts the user switch to another subject while an ongoing conversation takes place about something else. & Chatbot displays a informative message which says to switch to another conversation either reset the current conversation or finalise it. \\
     \hline
     
-    GUI & GUI Integration & Test the integration of the graphical user interface with all parts of the chat-bot. Perform tasks related to ticket finding, delay estimation and contingency recommendation using the GUI. & GUI handles the conversation about all parts flawlessly and orients the user for next steps.  \\
+    GUI & GUI Integration & Test the integration of the graphical user interface with all parts of the chatbot. Perform tasks related to ticket finding, delay estimation and contingency recommendation using the GUI. & GUI handles the conversation about all parts flawlessly and orients the user for next steps.  \\
     \hline
-    
     \end{longtable}
     
 % \subsection{System Testing} --> To be reviewed later 

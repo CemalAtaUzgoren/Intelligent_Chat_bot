@@ -4,7 +4,7 @@
 
 
 \subsection{NLP}
-The sections covers chatbot's performance in natural language understanding, response accuracy, user experience, and technical robustness. 
+The following sections outline the chatbot's performance in natural language understanding, response accuracy, user experience, and technical robustness. 
 \subsubsection{Natural Language Understanding (NLU)}
 \begin{itemize}
     \item \textbf{Intent Recognition:} The chatbot correctly identifies user intentions, such as searching for train tickets, specifying travel date and time, querying about prices or requesting delay information or requesting for contingency plans in case of partial or full line blockage.
@@ -22,51 +22,29 @@ The sections covers chatbot's performance in natural language understanding, res
 \subsubsection{User Experience (UX)}
 \begin{itemize}
     \item \textbf{Ease of Use:} As per the usability testing in \ref{tab:usability_testing} carried out by different UEA students, the feedback was positive about chatbot being easy to use.
-    \item \textbf{Response Time:} The response time of the answer was fairly short. The multi-processing implemented which runs the scraper scripts asynchronously instead of one by one, saved a lot of response time.
+    \item \textbf{Response Time:} The response time of the answer was fairly short. The multi-processing implemented which runs the scraper scripts asynchronously rather than in serier, saved a lot of response time.
     \item \textbf{User Satisfaction:} The overall response from both of the UEA students who carried usability testing was positive and satisfactory.
 \end{itemize} 
 
 \subsubsection{Technical Robustness}
 \begin{itemize}
-    \item \textbf{Reliability:} The developed chatbot have consistence performance with correct / appropriate responses.
-    \item \textbf{Error Handling:} The chatbot is robust enough to handle conversations related to different tasks as well as if there are mis-spelled words in the user's input or even there is partial information given.
+    \item \textbf{Reliability:} The developed chatbot have consistence performance with correct and appropriate responses.
+    \item \textbf{Error Handling:} The chatbot is robust enough to handle conversations related to different tasks as well as if there are grammatical errors in the user's input or even there is partial information given.
     \item \textbf{Integration:} The integrity constraints were applied in the chatbot to prevent delivering invalid information to the users.
 \end{itemize}
 
-\subsubsection{Areas for Improvement \& Future Enhancements}
-\textbf{Part A: Find cheapest train ticket}
-
-\begin{itemize}
-    \item In order to make the search for the cheapest train tickets more dynamic and accurate, the user should be allowed to enter other parameters, such as the number of adults and children and whether or not they have a rail card. If so, inquire about the kind of railcard, etc.
-    \item The user should be able to request a return ticket all at once rather than having to wait for the one-way search to finish before responding to the chatbot's request to inquire whether they would also like a return ticket. The user may be able to save more money in this method.
-    \item Even though multi-processing is used to run all of the scrapers asynchronously, the cheapest train fare search still takes a long time since the system needs time to render the response on the GUI. Redesigning the system could improve its performance.
-\end{itemize}
-
-\textbf{Part B: Find train delay}
-
-\begin{itemize}
-    \item 
-    \item 
-    \item 
-\end{itemize}
-
-\textbf{Part C: Fetch contingency plans}
-
-\begin{itemize}
-    \item Give the user the ability to request backup plans between any station on the Great Eastern track, not only the one between Colchester and Norwich.
-    \item The system should be able to receive additional inputs based on various situations, such as whether the obstruction is the result of a natural disaster like heavy rain or flooding, and then return the contingency plans in accordance with those inputs in order to make the search more dynamic. Train services must be halted, etc., if the temperature rises beyond thirty degrees.
-    \item It is also possible to give the backup plans due consideration. In the event of a blockage between two stations, the system ought to provide specific solutions, especially if it is close to midnight. A certain kind of response should be given if it's peak hour and so on.
-\end{itemize}
 
 \subsection{Regression Models}
 The sections below outline and describe the research efforts made into regression models and the performance metrics of each.
 % \subsubsection{Multi-layer Perceptron (MLP) Regressor}
 % A simple MLP model was integrated using the
+\subsubsection{Multi-layer Perceptron (MLP) Regressor}
+A Multi-layer Perceptron (MLP) model was implemented using both the Scikit and Keras libraries, however the results were considerably inaccurate when compared to other models. Table \ref{tab:model metrics} shows its inaccuracy. Due to the limited time and computational resources a hyper parameter tuning mechanism such as Gridsearch or RandomSearch was not implemented. Neither was an extensive training run executed. With these circumstances and results the MLP models were made redundant and not used in the final predictions.
 
-\paragraph{K Nearest Neighbors Regressor:} \label{Sec: KNN tuning}
+\subsubsection{K Nearest Neighbors Regressor:} \label{Sec: KNN tuning}
 The parameter which configured the number of neighbours of the K-Nearest Neighbors (KNN) regression model was manually tuned using a $for$ loop which iteratively increased the value of $k$ and scored the model accordingly using metrics outlines in Section \ref{Sec: Regression Metrics & performance}. Figure \ref{Fig: KNN K vs k} shows the iteration of $k$, the results of these $k$ values can be seen in Figures: \ref{Fig: KNN K vs MAE}, \ref{Fig: KNN K vs R^2}, \ref{Fig: KNN K vs RMSE}. From these results we can see minimal prediction accuracy improvement when $k > 30$, on the contrary we can see great improvements when $k$ is increased to 20. With these results in mind, a $k$ value of 50 was used to maximise potential accuracy as the trade off between prediction time per value of $k$ was minimal.
 
-\paragraph{Random Forest Regressor:}
+\subsubsection{Random Forest Regressor:}
 The Random Forest (RF) regression model was built with near-default parameters. The only specific change made to the configuration of the model was the number of estimators. Similar to the manual tuning of the KNN model outlined in Section \ref{Sec: KNN tuning}, an iterative $for$ loop was employed to score the model per number of estimators. Figure \ref{Fig: RF nn vs nn} displays the number of estimators searched, an initial value of 5 was chosen with an iterative increase of 1 until a value of 10 was selected. Once the value of estimators reached 10, an incrementation of 5 was chosen instead to increase efficiency. Table \ref{tab: RF score per K} displays scores per value of $k$. Figures \ref{Fig: RF MSE vs nn}, \ref{Fig: RF r^2 vs nn}, \ref{Fig: RF RMSE vs nn} show the models performance per iteration. From these results we can see the performance peaked at an estimator value of 8.
 -
 \begin{table}[!htbp]
@@ -91,11 +69,11 @@ The Random Forest (RF) regression model was built with near-default parameters. 
     \label{tab: RF score per K}
 \end{table}
 
-\paragraph{XGBoost Regression:}
+\subsubsection{XGBoost Regression:}
 Similar the to K Nearest Neighbors and Random Forest models, the XGBoost model was implemented with default parameters with iteratively increasing number of estimators. Table \ref{tab:XGBoost score per N_estimators} and Figure \ref{fig: XGBoost estimators vs results} show the performance of the model per number of estimators. From these results we can see a correlation between an increased value of estimators and the models improved performance.
 
 
-\begin{table}[h]
+\begin{table}[!htbp]
     \centering
     % \begin{tabular}{|c|c|c|c|}
     \begin{tabularx}{\textwidth}{XXXX}
@@ -133,10 +111,10 @@ Similar the to K Nearest Neighbors and Random Forest models, the XGBoost model w
     \label{tab:XGBoost score per N_estimators}
 \end{table}
 
-\paragraph{Metrics and results:}\label{sec: Metrics and results}
+\subsubsection{Metrics and results:}\label{sec: Metrics and results}
 Table \ref{tab:model metrics} and Figures \ref{Fig: all_MAE}-\ref{Fig: all_RMSE} outline each models performance using the metrics described in Section. For a secondary evaluation, previous journey arrival and departure times were extracted from an online resource \href{https://www.recenttraintimes.co.uk/}{``Recent Train Times''} to be used as new unseen data. Figure \ref{fig: real delayed train times} and \ref{fig: real on-time train times} are two examples of the ground truth values extracted from the online source. Figure \ref{fig: inline_Regression models prediction of arrival time at Norwich} and \ref{fig: Regression model predicted arrival time at Norwich from London Liverpool Street} show the highest attaining classifiers predictions of the arrival time at Norwich using the data extracted.
 
-\begin{table}[hbt!]
+\begin{table}[!htbp]
     \centering
     \begin{tabularx}{\textwidth}{XXXXX}
     \hline
@@ -155,12 +133,35 @@ Table \ref{tab:model metrics} and Figures \ref{Fig: all_MAE}-\ref{Fig: all_RMSE}
     \label{tab:model metrics}
 \end{table}
 
-\begin{figure}[hbt!]
+\begin{figure}[!htbp]
     \centering
     \includegraphics[width=\textwidth]{../regression_model/plots/Comparison/Scatter plot of Models vs Predicted Value 55020.jpeg}
     \caption[regression model predictions of previous journeys]{Regression models prediction of arrival time at Norwich from a departure from London Liverpool Station if delayed at Ipswich. The red dotted vertical line is ground truth.}
     \label{fig: inline_Regression models prediction of arrival time at Norwich}
 \end{figure}
 
-\paragraph{Model Evaluation:}
+\subsubsection{Model Evaluation:}
 From the results described in Section \ref{sec: Metrics and results} Random Forest, K Nearest Neighbors and XGBoost regressor models appear superior. However, as shown in Figures \ref{fig: inline_Regression models prediction of arrival time at Norwich} and \ref{fig: Regression model predicted arrival time at Norwich from London Liverpool Street} each model will have a degree of inaccuracy when making predictions, as a result no single model would be a better choice for deployment. An average value was instead used to capture the accuracy of each model.
+
+\subsection{Areas for Improvement \& Future Enhancements}
+The following sections describe the areas which could be subject to improvement should the project continue.
+\subsubsection{Part A: Find cheapest train ticket}
+\begin{itemize}
+    \item In order to make the search for the cheapest train tickets more dynamic and accurate, the user should be allowed to enter other parameters, such as the number of adults and children and whether or not they have a rail card. If so, inquire about the kind of railcard, etc.
+    \item The user should be able to request a return ticket all at once rather than having to wait for the one-way search to finish before responding to the chatbot's request to inquire whether they would also like a return ticket. The user may be able to save more money in this method.
+    \item Even though multi-processing is used to run all of the scrapers asynchronously, the cheapest train fare search still takes a long time since the system needs time to render the response on the GUI. Redesigning the system could improve its performance.
+\end{itemize}
+
+\subsubsection{Part B: Find train delay}
+\begin{itemize}
+    \item In an attempt to improve the model's accuracy, more features could be introduced such as: days of the week, current weather at time of recording or public holiday occasion. One can assume these parameters should see considerable difference.
+    \item The data provided was of decent size and quality, however an increased volume could be advantageous.
+    \item At present the model will only predict the arrival time at Norwich station from London Liverpool Street. To improve upon this model, predictions of each mid-way station as well as predictions of other journeys should be possible.
+\end{itemize}
+
+\subsubsection{Part C: Fetch contingency plans}
+\begin{itemize}
+    \item Give the user the ability to request backup plans between any station on the Great Eastern track, not only the one between Colchester and Norwich.
+    \item The system should be able to receive additional inputs based on various situations, such as whether the obstruction is the result of a natural disaster like heavy rain or flooding, and then return the contingency plans in accordance with those inputs in order to make the search more dynamic. Train services must be halted, etc., if the temperature rises beyond thirty degrees.
+    \item It is also possible to give the backup plans due consideration. In the event of a blockage between two stations, the system ought to provide specific solutions, especially if it is close to midnight. A certain kind of response should be given if it's peak hour and so on.
+\end{itemize}

@@ -162,8 +162,19 @@ class TestChatbotConversation(TestCreate):
         input_data = pd.DataFrame(_input_data)
         # expected_output = "19:43"
         
-        predictions = regression_model_functions.make_delay_prediction(input=input_data)
+        predictions = regression_model_functions.make_delay_prediction(input=input_data, output_type= str)
         self.assertTrue(isinstance(predictions, str))
+    
+    def test_predictions_2(self):
+        _input_data = {"tpl" : 25,
+                      "depart_from_LDN" : ["17:49"],
+                      "depart_from_current_station" : ["19:02"]}
+        
+        input_data = pd.DataFrame(_input_data)
+        # expected_output = "19:43"
+        
+        predictions = regression_model_functions.make_delay_prediction(input=input_data)
+        self.assertTrue(isinstance(predictions, pd.DataFrame))
 
 class TestScrapers(TestCreate):
 
@@ -289,7 +300,7 @@ if __name__ == '__main__':
     #create contingency data
     fo = open(os.getcwd() + '/contingencies_details.csv', "w")
     fo.write("")
-    fo.write("origin,destination,date,time")
+    fo.write("Station1,Station2,BlockageType")
     fo.close()
 
     #crear scraper data

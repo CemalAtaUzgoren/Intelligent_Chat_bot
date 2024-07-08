@@ -11,7 +11,9 @@
             "howdy",
             "g'day",
             "salutations",
-            "greetings"
+            "greetings",
+            "hi jarvis",
+            "hello jarvis"
         ],
         "responses": [
             "Thanks for checking in. How can I help you today ?",

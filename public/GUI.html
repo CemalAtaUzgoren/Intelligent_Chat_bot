@@ -179,6 +179,7 @@
             document.getElementById('diversionsInfo').classList.remove('blur');
             //button.style.display = 'none'; 
             button.style.opacity ='0'
+            button.style.zIndex = '-10'
             recognition.stop();
             isReady=false
             console.log('listening stoped.');
@@ -615,17 +616,36 @@
         userContainer.className = 'chat-block-user chat-block-general';
         const DivForLogo = document.createElement('div')
         const p_for_div = document.createElement('p')
-        const logo_img_user = document.createElement('img')
-        logo_img_user.src='4675250.png'
+        //const logo_img_user = document.createElement('img')
+        DivForLogo.style.backgroundImage ='url("4675250.png")'
+        DivForLogo.style.backgroundSize = 'cover'; // Cover the entire div
+        DivForLogo.style.backgroundPosition = 'center'; // Center the image
+        const pForClipBoardBot = document.createElement('p')
+        pForClipBoardBot.innerHTML ='<i class="fa-solid fa-copy" style="color: #FFD43B;"></i>'
+        pForClipBoardBot.classList.add('clipBoard')
+        DivForLogo.appendChild(pForClipBoardBot)
+        //logo_img_user.src='4675250.png'
         content_container.appendChild(userContainer)
         userContainer.appendChild(DivForLogo)
         userContainer.appendChild(Newdiv)
         Newdiv.appendChild(p_for_div)
-        DivForLogo.appendChild(logo_img_user)
+        //DivForLogo.appendChild(logo_img_user)
+        DivForLogo.addEventListener('mouseover', () => {
+            pForClipBoardBot.style.opacity = '1';
+            DivForLogo.style.backdropFilter =`brightness(20%)`
+            DivForLogo.style.backgroundImage =''
+            
+        });
+
+        DivForLogo.addEventListener('mouseout', () => {
+            pForClipBoardBot.style.opacity = '0'; 
+            DivForLogo.style.backgroundImage ='url("4675250.png")'
+            
+        });
 
         Newdiv.classList.add('user_input')
         DivForLogo.classList.add('LogoDiv')
-        logo_img_user.classList.add('logoImg')
+        //logo_img_user.classList.add('logoImg')
         p_for_div.classList.add('am')
         
 
@@ -654,6 +674,7 @@
         Loader()
         dinamicLoaderContent(0)
         document.getElementById("input1").readOnly = true;
+        document.getElementById("submitBut1").disabled = true
         //processPopUp.style.opacity = '1'
         postPlane.remove();
         postP.remove();
@@ -670,6 +691,7 @@
 
             if (xhr.status === 200) {// if request is successful , then add the chatBot response to the div.
                 document.getElementById("input1").readOnly = false;
+                document.getElementById("submitBut1").disabled = false
                 var jsonResponse = JSON.parse(xhr.responseText);//using the string comes from server side.
                 var bot_res = JSON.stringify(jsonResponse.message);
                 console.log('Server response:', bot_res);
@@ -679,12 +701,30 @@
                 BotContainer.className = 'chat-block-bot chat-block-general';
                 const Newdiv = document.createElement('div')
                 const DivForLogo = document.createElement('div')
-                const logo_img = document.createElement('img')
-                logo_img.src='icons8-chatgpt-512.png'
+                DivForLogo.classList.add('LogoDivBot')
+                DivForLogo.style.backgroundImage ='url("icons8-chatgpt-512.png")'
+                DivForLogo.style.backgroundSize = 'cover'; // Cover the entire div
+                DivForLogo.style.backgroundPosition = 'center'; // Center the image
+                const pForClipBoardBot = document.createElement('p')
+                pForClipBoardBot.innerHTML ='<i class="fa-solid fa-copy" style="color: #FFD43B;"></i>'
+                pForClipBoardBot.classList.add('clipBoard')
+                DivForLogo.appendChild(pForClipBoardBot)
+                
                 content_container.appendChild(BotContainer)
                 BotContainer.appendChild(DivForLogo)
                 BotContainer.appendChild(Newdiv)
-                DivForLogo.appendChild(logo_img)
+
+                DivForLogo.addEventListener('mouseover', () => {
+                    pForClipBoardBot.style.opacity = '1';
+                    DivForLogo.style.backgroundImage =''
+                });
+
+                DivForLogo.addEventListener('mouseout', () => {
+                    pForClipBoardBot.style.opacity = '0';
+                    DivForLogo.style.backgroundImage ='url("icons8-chatgpt-512.png")'
+                });
+                
+                
 
                 part3outputParse(bot_res,Newdiv)// contingency UI handling function.
 
@@ -700,7 +740,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
                             const p_for_Dep_sta = document.createElement('p')
                             p_for_Dep_sta.classList.add('am')
-                            p_for_Dep_sta.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_Dep_sta.innerHTML = clearSent('- ' + splitted_bot_res[i]+' ' + splitted_bot_res[i+1])
                             p_for_Dep_sta.style.color = "chartreuse"
                             Newdiv.appendChild(p_for_Dep_sta)
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -716,7 +756,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
                             const p_for_Arr_sta = document.createElement('p')
                             p_for_Arr_sta.classList.add('am')
-                            p_for_Arr_sta.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_Arr_sta.innerHTML = clearSent('- ' + splitted_bot_res[i]+' ' + splitted_bot_res[i+1])
                             p_for_Arr_sta.style.color = "chartreuse"
                             Newdiv.appendChild(p_for_Arr_sta)
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -786,7 +826,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
                             const p_for_time = document.createElement('p')
                             p_for_time.classList.add('am')
-                            p_for_time.innerHTML = clearSent('- ' + splitted_bot_res[i] + splitted_bot_res[i+1])
+                            p_for_time.innerHTML = clearSent('- ' + splitted_bot_res[i]+' ' + splitted_bot_res[i+1])
                             p_for_time.style.color = "chartreuse"
                             Newdiv.appendChild(p_for_time)
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -803,11 +843,11 @@
                             const p_for_date = document.createElement('p')
                             
                             if (splitted_bot_res.includes('PastDate')){
-                                p_for_date.innerHTML = ` IMPORTANT NOTE: Date can't be of previous day. You have entered ${splitted_bot_res[i+1].replace('"','')}. Please enter minimum today's date.`
+                                p_for_date.innerHTML = ` IMPORTANT NOTE: Date can't be of previous day. You have entered ${splitted_bot_res[i+1].replace('"','')} Please enter minimum today's date.`
                                 p_for_date.classList.add('am')
                                 p_for_date.style.color = "rgb(43, 195, 226)"
                             }else{
-                                p_for_date.innerHTML = ('- ' + splitted_bot_res[i] + splitted_bot_res[i+1]).replace('"','')
+                                p_for_date.innerHTML = ('- ' + splitted_bot_res[i]+' ' + splitted_bot_res[i+1]).replace('"','')
                                 p_for_date.classList.add('am')
                                 p_for_date.style.color = "chartreuse"
                                 let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -828,7 +868,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
                             const p_for_Web_name = document.createElement('p')
                             p_for_Web_name.classList.add('am')
-                            p_for_Web_name.innerHTML = '- ' + splitted_bot_res[i] + splitted_bot_res[i+1]
+                            p_for_Web_name.innerHTML = '- ' + splitted_bot_res[i]+' ' + splitted_bot_res[i+1]
                             Newdiv.appendChild(p_for_Web_name)
                             p_for_Web_name.style.color = "chartreuse"
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -844,7 +884,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: ' 
                             const p_for_price = document.createElement('p')
                             p_for_price.classList.add('am')
-                            p_for_price.innerHTML = clearSent('- ' + splitted_bot_res[i] + '£ ' + splitted_bot_res[i+1])
+                            p_for_price.innerHTML = clearSent('- ' + splitted_bot_res[i] + ' £' + splitted_bot_res[i+1])
                             p_for_price.style.color = "chartreuse"
                             Newdiv.appendChild(p_for_price)
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -939,7 +979,7 @@
                             extracted.innerHTML = 'EXTRACTED INFORMATION: '
                             const p_for_return_sta = document.createElement('p')
                             p_for_return_sta.classList.add('am')
-                            p_for_return_sta.innerHTML = clearSent('Predicted arriving time to London Liverpool Street station is : ' + splitted_bot_res[i+1])
+                            p_for_return_sta.innerHTML = clearSent('Predicted arriving time to Norwich station is : ' + splitted_bot_res[i+1])
                             p_for_return_sta.style.color = "orange"
                             Newdiv.appendChild(p_for_return_sta)
                             let a=JSON.parse(localStorage.getItem('only_for_once'));
@@ -1171,7 +1211,7 @@
                         if (JSON.parse(localStorage.getItem('only_for_once'))[11]==0 && !splitted_bot_res.includes('OnGoing')){
                             const p_for_date_warning = document.createElement('p')
                             p_for_date_warning.classList.add('am')
-                            p_for_date_warning.innerHTML = '- The origin station of the journey is missing.'
+                            p_for_date_warning.innerHTML = '- The location of the previous station (or current) is missing.'
                             p_for_date_warning.style.color = 'red'
                             Newdiv.appendChild(p_for_date_warning)
                             voiceOver(p_for_date_warning.innerHTML)
@@ -1211,7 +1251,7 @@
 
                 Newdiv.classList.add('bot_response')
                 DivForLogo.classList.add('LogoDivBot')
-                logo_img.classList.add('logoImg')
+                //logo_img.classList.add('logoImg')
                 p_for_div.classList.add('am')
             
                 
@@ -1221,6 +1261,48 @@
                 setTimeout(function () {DivForLogo.style.opacity = '1'}, 300);
                 scrollToBottom();
                 document.getElementById('input1').value = '';
+                
+                // ClipBoard Mechanism For Bot Response.   
+                const logoDivBotElements = document.querySelectorAll('.LogoDivBot');
+                const botResponseElements = document.querySelectorAll('.bot_response');
+                var botTextWhole = ''
+                logoDivBotElements.forEach((logoDivBotElement, index) => {
+                    
+                    logoDivBotElement.addEventListener('click', () => {
+                        
+                        const botDivContent = botResponseElements[index];
+                        
+                        const paragraphs = botDivContent.querySelectorAll('p');
+                       
+                        paragraphs.forEach(paragraph => {
+                            console.log(paragraph.textContent);
+                            botTextWhole = botTextWhole + String(paragraph.textContent)
+                            navigator.clipboard.writeText(botTextWhole);
+                        });
+                        botTextWhole = ''
+                    });
+                });
+
+                const logoDivUserElements = document.querySelectorAll('.LogoDiv');
+                const UserInputElements = document.querySelectorAll('.user_input ');
+                var UserInputText = ''
+                logoDivUserElements.forEach((logoDivUserElements, index) => {
+                    
+                    logoDivUserElements.addEventListener('click', () => {
+                        
+                        const UserDivContent = UserInputElements[index];
+                        
+                        const paragraphs = UserDivContent.querySelectorAll('p');
+                       
+                        paragraphs.forEach(paragraph => {
+                            console.log(paragraph.textContent);
+                            UserInputText  = UserInputText  + String(paragraph.textContent)
+                            navigator.clipboard.writeText(UserInputText);
+                        });
+                        UserInputText = ''
+                    });
+                });
+
             }
         };
         xhr.send(new URLSearchParams(formData));
@@ -1408,14 +1490,21 @@ function part3outputParse(botRes,Newdiv){
                    const actionPlan = document.createElement('p')
                    ActionHead.classList.add('am')
                    actionPlan.classList.add('am')
-                   ActionHead.innerHTML = 'Action Plan:'
-                   actionPlan.innerHTML =  clearSent(botRes.split('CMP_7028B')[botRes.split('CMP_7028B').indexOf('actionPlan') + 1])
-                   ActionHead.style.color='red'
-                   actionPlan.style.color='white'
-                   Newdiv.appendChild(ActionHead)
-                   Newdiv.appendChild(actionPlan)
+                   ActionHead.innerHTML = 'Action Plans:'
                    voiceOver('Action Plan:')
-                   voiceOver(actionPlan.innerHTML)
+                   ActionHead.style.color='red'
+                   Newdiv.appendChild(ActionHead)
+                   var counterContPlan = 1
+                   for (let i = 0 ; i<botRes.split('CMP_7028B').length ; i++){
+                    if (botRes.split('CMP_7028B')[i] == 'actionPlan'){
+                        const actionPlan = document.createElement('p')
+                        actionPlan.innerHTML =  clearSent(`Plan ${counterContPlan} : ` + botRes.split('CMP_7028B')[i + 1])
+                        actionPlan.style.color='white'
+                        Newdiv.appendChild(actionPlan)
+                        voiceOver(actionPlan.innerHTML)
+                        counterContPlan +=1
+                    }
+                   }
                 }
 
             }
